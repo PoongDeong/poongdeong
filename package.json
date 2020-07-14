@@ -1,0 +1,23 @@
+{
+  "name": "poongdeong",
+  "version": "1.0.0",
+  "description": "함께 집중해서 공부할 수 있는 웹애플리케이션입니다.",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "npx fly deploy:production --flightplan flightplan.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PoongDeong/poodeong.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PoongDeong/poodeong/issues"
+  },
+  "homepage": "https://github.com/PoongDeong/poodeong#readme",
+  "dependencies": {
+    "flightplan": "^0.6.20"
+  }
+}
