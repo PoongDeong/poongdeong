@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  app:
+    image: poongdeong-server
+    build:
+      dockerfile: Dockerfile
+      context: .
+    restart: always
+    expose:
+      - "3000"
+
+  nginx:
+    image: nginx:1.17
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - app
