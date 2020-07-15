@@ -3,8 +3,8 @@ import React from 'react';
 const styles = {
   textarea: {
     fontSize: '18px',
-  }
-}
+  },
+};
 
 export default function MatchingOptMemo() {
   return (

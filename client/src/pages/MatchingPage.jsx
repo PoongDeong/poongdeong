@@ -1,11 +1,11 @@
 import React from 'react';
 
-import MenuPage from "./MenuPage";
-import MatchingBtn from "../components/MatchingBtn";
-import MatchingOpt from "../components/MatchingOpt";
-import MatchingWaitTimer from "../components/MatchingWaitTimer";
-import {useDispatch, useSelector} from "react-redux";
-import {setIsMenuOn} from "../slice";
+import { useDispatch, useSelector } from 'react-redux';
+import MenuPage from './MenuPage';
+import MatchingBtn from '../components/MatchingBtn';
+import MatchingOpt from '../components/MatchingOpt';
+import MatchingWaitTimer from '../components/MatchingWaitTimer';
+import { setIsMenuOn } from '../slice';
 
 const styles = {
   main: {
@@ -18,20 +18,20 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
   },
-}
+};
 
 export default function MatchingPage() {
   const dispatch = useDispatch();
-  const isMenuOn = useSelector(state => state.isMenuOn);
+  const isMenuOn = useSelector((state) => state.isMenuOn);
 
   const openMenu = () => {
     dispatch(setIsMenuOn());
-  }
+  };
 
   return (
     <div css={styles.main}>
       <div>
-        <button onClick={openMenu}>메뉴</button>
+        <button onClick={openMenu} type="button">메뉴</button>
         {isMenuOn ? <MenuPage /> : <></>}
       </div>
       <div css={styles.option}>
@@ -40,5 +40,5 @@ export default function MatchingPage() {
       <MatchingWaitTimer />
       <MatchingBtn />
     </div>
-  )
+  );
 }
