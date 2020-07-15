@@ -6,9 +6,9 @@ const JWTToken = {
 
   createToken({ email }) {
     return jwt.sign(
-      { email }, 
+      { email },
       privateKey,
-      { expiresIn: '17h', subject: 'userInfo' }
+      { expiresIn: '17h', subject: 'userInfo' },
     );
   },
 

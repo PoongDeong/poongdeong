@@ -9,6 +9,9 @@ const userRepository = {
     return !userInfoStorage.find((user) => (user.email === email));
   },
 
+  checkNickNameAvailability(nickname) {
+    return !userInfoStorage.find((user) => (user.nickname === nickname));
+  },
 };
 
 module.exports = userRepository;

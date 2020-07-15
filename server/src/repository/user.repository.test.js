@@ -39,4 +39,20 @@ describe('user.repository', () => {
       });
     });
   });
+
+  describe('checkNicknameAvailability', () => {
+    context('with available nickname', () => {
+      it('returns true', () => {
+        const valid = userRepository.checkNickNameAvailability('AVAILABLE_NICKNAME');
+        expect(valid).toBe(true);
+      });
+    });
+
+    context('with unavailable nickname', () => {
+      it('returns false', () => {
+        const valid = userRepository.checkNickNameAvailability('기봉');
+        expect(valid).toBe(false);
+      });
+    });
+  });
 });

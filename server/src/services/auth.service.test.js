@@ -49,17 +49,13 @@ describe('auth', () => {
   describe('isEmailFormat', () => {
     context('with email format', () => {
       it('returns true', () => {
-        const email = 'tester@example.com';
-        
-        expect(authService.isEmailFormat(email)).toBe(true);
+        expect(authService.isEmailFormat('tester@example.com')).toBe(true);
       });
     });
-    
+
     context('with wrong email format', () => {
       it('returns false', () => {
-        const email = 'WRONG_FORMAT';
-        
-        expect(authService.isEmailFormat(email)).toBe(false);
+        expect(authService.isEmailFormat('WRONG_FORMAT')).toBe(false);
       });
     });
   });
@@ -68,7 +64,6 @@ describe('auth', () => {
     context('with valid user', () => {
       it('creates user ', async () => {
         await authService.signup({ email, password, nickname });
-
         expect(userRepository.create).toBeCalledWith({ email, password, nickname });
       });
     });
@@ -107,6 +102,21 @@ describe('auth', () => {
           await authService.signup({ email, password, nickname });
         } catch (err) {
           expect(err).toEqual(new Error('Email already exists'));
+        }
+      });
+    });
+
+    context('with unavailable nickname', () => {
+      beforeEach(() => {
+        userRepository.checkAvailability.mockReturnValue(true);
+        userRepository.checkNicknameAvailability.mockReturnValue(false);
+      });
+
+      it('throws error', async () => {
+        try {
+          await authService.signup({ email, password, nickname });
+        } catch (err) {
+          expect(err).toEqual(new Error('Nickname already exists'));
         }
       });
     });

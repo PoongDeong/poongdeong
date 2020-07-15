@@ -20,6 +20,9 @@ const auth = {
     if (userRepository.checkAvailability(email) === false) {
       throw new Error('Email already exists');
     }
+    if (userRepository.checkNicknameAvailability(nickname) === false) {
+      throw new Error('Nickname already exists');
+    }
     await userRepository.create({ email, password, nickname });
   },
 
