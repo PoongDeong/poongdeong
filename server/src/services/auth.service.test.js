@@ -4,7 +4,7 @@ import jwtTokenService from './jwtToken.service';
 describe('auth', () => {
   let token;
   beforeEach(async () => {
-    token = await jwtTokenService.createToken({ email: 'gibong@gmail.com' })
+    token = await jwtTokenService.createToken({ email: 'gibong@gmail.com' });
   });
 
   describe('login', () => {
