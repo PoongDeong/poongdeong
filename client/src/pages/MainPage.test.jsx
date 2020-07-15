@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import { render, fireEvent } from '@testing-library/react'
 
 import MainPage from './MainPage';
+import {MemoryRouter} from "react-router";
 
 jest.mock('react-redux');
 
@@ -24,11 +25,13 @@ describe('MainPage', () =>{
     })
 
     it('renders MainPage', () =>{
-      const { container } = render(
-        <MainPage />
+      const { container, getByText } = render(
+        <MemoryRouter>
+          <MainPage />
+        </MemoryRouter>
       );
 
-      expect(container).toHaveTextContent('로그인 중');
+      expect(getByText('회원가입')).toBeInTheDocument();
     });
   });
 
@@ -41,22 +44,12 @@ describe('MainPage', () =>{
 
     it('renders MainPage', () =>{
       const { container } = render(
-        <MainPage />
+        <MemoryRouter>
+          <MainPage />
+        </MemoryRouter>
       );
 
       expect(container).toHaveTextContent('옵션');
     });
   });
-
-  context('when click login', () =>{
-    it('dispatches action', () =>{
-      const { getByText } = render(
-        <MainPage />
-      );
-
-      fireEvent.click(getByText('login'));
-
-      expect(dispatch).toBeCalled();
-    })
-  })
 })

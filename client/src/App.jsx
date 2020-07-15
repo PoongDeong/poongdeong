@@ -3,13 +3,13 @@ import React from 'react';
 import { Route, Switch } from "react-router-dom";
 
 import MainPage from "./pages/MainPage";
-import MatchingPage from "./pages/MatchingPage";
+import SignUpPage from "./pages/SignUpPage";
 
 function App() {
   return (
     <Switch>
-      <Route path="/" component={MatchingPage} />
-      {/*<Route path="/" component={MainPage} />*/}
+      <Route exact path="/" component={MainPage} />
+      <Route path="/signup" component={SignUpPage} />
     </Switch>
   );
 }

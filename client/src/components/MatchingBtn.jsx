@@ -15,7 +15,7 @@ const styles = {
 function MatchingBtn() {
   return (
     <div css={styles.box}>
-      <button css={styles.button}>매칭 시작</button>
+      <button css={styles.button}>매칭시작</button>
     </div>
   );
 }
