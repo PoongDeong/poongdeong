@@ -9,12 +9,17 @@ describe('user.repository', () => {
       });
     });
 
-    describe('checkPassword', () => {
-      context('with unexisting id', () => {
-        it('returns false', () => {
-          const valid = userRepository.checkPassword('gifd@gmail.com', '1111');
-          expect(valid).toBe(false);
-        });
+    context('with unexisting id', () => {
+      it('returns false', () => {
+        const valid = userRepository.checkPassword('UNEXISTING_ID', 'ANY_PASSWORD');
+        expect(valid).toBe(false);
+      });
+    });
+
+    context('with existing id and wrong password', () => {
+      it('returns false', () => {
+        const valid = userRepository.checkPassword('gibong@gmail.com', 'WRONG_PASSWORD');
+        expect(valid).toBe(false);
       });
     });
   });
