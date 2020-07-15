@@ -11,7 +11,7 @@ const { actions, reducer } = createSlice({
       nickname: '',
     },
     token: '',
-    isLogin: true,
+    isLogin: false,
     isMenuOn: false,
   },
   reducers: {
@@ -55,7 +55,6 @@ export const {
 export function requestSignUp(history) {
   return async (dispatch, getState) => {
     const { signUpFields } = getState();
-    console.log('signUpFields', signUpFields);
 
     const token = await postSignUp(signUpFields);
 
