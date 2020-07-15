@@ -13,4 +13,10 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.post('/signup', async (req, res) => {
+  const { email, password, nickname } = req.body;
+  await authService.signup({ email, password, nickname });
+  res.status(201).send({});
+});
+
 export default router;
