@@ -1,7 +1,5 @@
 import React from 'react';
 
-import {css} from 'emotion';
-
 const styles = {
   box: {
     textAlign: 'center',
@@ -16,8 +14,8 @@ const styles = {
 
 function MatchingBtn() {
   return (
-    <div className={styles.box}>
-      <button className={styles.button}>매칭 시작</button>
+    <div css={styles.box}>
+      <button css={styles.button}>매칭 시작</button>
     </div>
   );
 }

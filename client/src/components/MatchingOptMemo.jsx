@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { css } from 'emotion';
+const styles = {
+  textarea: {
+    fontSize: '18px',
+  }
+}
 
 export default function MatchingOptMemo() {
   return (
     <div>
-      <textarea
-        className={css([{
-          fontSize: '18px',
-        }])}
-        placeholder="목표를 작성해주세요" />
+      <textarea css={styles.textarea} placeholder="목표를 작성해주세요" />
     </div>
   );
 }

@@ -1,6 +1,4 @@
-import React, {useState} from 'react';
-
-import {css} from 'emotion';
+import React from 'react';
 
 import MatchingOptCheckBox from "./MatchingOptCheckBox";
 import MatchingOptMemo from "./MatchingOptMemo";
@@ -15,29 +13,18 @@ const styles = {
     width: '100%',
     borderRadius: '10px'
   },
-  button: {
-    width: '200px',
-    height: '40px',
-    background: '#004ba0',
-    color: '#bbdefb'
+  radio: {
+    float: 'left',
+    width: '80%',
+    marginTop: '10px',
+    marginBottom: '20px'
   },
 }
 
-
-function MatchingOpt() {
+export default function MatchingOpt() {
   return (
-    <div
-      className={styles.box}>
-      <div
-        className={css([
-          {
-            float: 'left',
-            width: '80%',
-            marginTop: '10px',
-            marginBottom: '20px'
-          }
-        ])}
-      >
+    <div css={styles.box}>
+      <div css={styles.radio}>
         <hr></hr>
         <span>시간</span>
         <MatchingOptCheckBox selection={['25분', '50분']} info={"time_info"}/>
@@ -51,5 +38,3 @@ function MatchingOpt() {
     </div>
   );
 }
-
-export default MatchingOpt;

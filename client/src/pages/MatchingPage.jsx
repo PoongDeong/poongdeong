@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { css } from 'emotion';
-
 import Option from "../components/Option";
 import MatchingBtn from "../components/MatchingBtn";
 import MatchingOpt from "../components/MatchingOpt";
