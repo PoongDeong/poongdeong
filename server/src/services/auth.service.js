@@ -7,9 +7,8 @@ const auth = {
     if (await userRepository.checkPassword(email, password)) {
       return jwtTokenService.createToken({ email });
     }
-    return Error;
+    throw new Error('login failed');
   },
-
 };
 
 module.exports = auth;

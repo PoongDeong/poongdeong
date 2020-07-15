@@ -19,16 +19,16 @@ describe('auth', () => {
     context('with given existing id and wrong password', () => {
       const email = 'gibong@gmail.com';
       const password = 'WRONG_PASSWORD';
-      it('returns a userInfo ', async () => {
-        expect(await authService.login({ email, password })).toBe(Error);
+      it('returns a userInfo ', () => {
+        expect(authService.login({ email, password })).rejects.toThrow(new Error('login failed'));
       });
     });
 
     context('with given existing id and wrong password', () => {
       const email = 'UNEXISTING_ID';
       const password = 'ANY_PASSWORD';
-      it('returns a userInfo ', async () => {
-        expect(await authService.login({ email, password })).toBe(Error);
+      it('returns a userInfo', () => {
+        expect(authService.login({ email, password })).rejects.toThrow(new Error('login failed'));
       });
     });
   });
