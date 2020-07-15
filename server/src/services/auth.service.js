@@ -1,23 +1,14 @@
 import userRepository from '../repository/user.repository';
+import jwtTokenService from './jwtToken.service';
 
 const auth = {
-  
 
-//   async idExists(id) {
-//     return userRepository.
-//   }
-//   async checkPassword(id, password) {
-//     return userRepository.checkPassword(id, password);
-//   },
-
-
-  async login(id,password) {
-
-      // 입력한 id랑 password 가 db랑 맞는지.
-
-      // token을 돌려준다.
-      userRepository.
-  }
+  async login({ email, password }) {
+    if (await userRepository.checkPassword(email, password)) {
+      return jwtTokenService.createToken({ email });
+    }
+    return Error;
+  },
 
 };
 

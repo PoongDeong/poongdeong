@@ -1,8 +1,8 @@
 import userInfo from '../jsonStorage/user.json';
 
 const userRepository = {
-  checkPassword(id, password) {
-    return !!userInfo.filter((user) => (user.email === id && user.password === password))[0];
+  checkPassword(email, password) {
+    return !!userInfo.find((user) => (user.email === email && user.password === password));
   },
 };
 
