@@ -8,14 +8,14 @@ const styles = {
     width: '200px',
     height: '40px',
     background: '#004ba0',
-    color: '#bbdefb'
+    color: '#bbdefb',
   },
-}
+};
 
 function MatchingBtn() {
   return (
     <div css={styles.box}>
-      <button css={styles.button}>매칭시작</button>
+      <button css={styles.button} type="button">매칭시작</button>
     </div>
   );
 }

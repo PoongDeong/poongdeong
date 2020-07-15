@@ -5,8 +5,8 @@ const styles = {
     marginBottom: '20px',
     color: '#bbdefb',
     textAlign: 'center',
-  }
-}
+  },
+};
 
 export default function MatchingWaitTimer() {
   return (

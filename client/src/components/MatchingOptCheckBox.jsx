@@ -2,7 +2,7 @@ import React from 'react';
 
 const styles = {
   box: {
-    margin: '15px'
+    margin: '15px',
   },
   button: {
     margin: '0',
@@ -22,25 +22,26 @@ const styles = {
       color: '#FFF',
       boxShadow: '0 0 10px rgba(102, 179, 251, 0.5)',
       borderColor: '#4B9DEA',
-      zIndex: '1'
-    }
+      zIndex: '1',
+    },
   },
   radio: {
     display: 'none',
   },
-}
+};
 
 export default function MatchingOptCheckBox({ selection, info }) {
   return (
     <div css={styles.box}>
-      {selection.map((v, i) =>
-        <span key={i}>
-          <label>
-            <button css={styles.button}>{v}</button>
-            <input type="radio" name={info} css={styles.radio} />
+      {selection.map((v) => (
+        <span key={v}>
+          <label htmlFor={v}>
+            <button css={styles.button} type="button">{v}</button>
           </label>
+
+          <input id={v} type="radio" name={info} css={styles.radio} />
         </span>
-      )}
+      ))}
     </div>
   );
 }

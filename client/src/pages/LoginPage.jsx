@@ -2,18 +2,18 @@ import React from 'react';
 
 import { Link } from 'react-router-dom';
 
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch } from 'react-redux';
 
 const styles = {
   page: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   logo: {
     width: '60%',
     height: '60%',
-    margin: '60px 0px'
+    margin: '60px 0px',
   },
   input: {
     background: '#fafafa',
@@ -40,22 +40,19 @@ const styles = {
   font: {
     color: 'rgba(var(--f52, 153, 153, 153), 1)',
     paddingBottom: '4px',
-  }
-}
-
+  },
+};
 
 export default function LoginPage() {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
 
   const goToMainPage = () => {
-    state.isLogin()
-    dispatch()
+    dispatch();
   };
 
   return (
     <div css={styles.page}>
-      <img css={styles.logo} src="../src/images/logo.png" />
+      <img css={styles.logo} src="../src/images/logo.png" alt="Logo" />
       <form
         // onSubmit={handleSubmit(onSubmit)}
         css={styles.form}

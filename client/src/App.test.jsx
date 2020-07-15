@@ -1,38 +1,45 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
 
-import { render, fireEvent, screen } from '@testing-library/react'
+import { render, fireEvent, screen } from '@testing-library/react';
 
 import App from './App';
 
 jest.mock('react-redux');
 
-describe('App', () =>{
-  beforeEach(() =>{
+describe('App', () => {
+  beforeEach(() => {
     useSelector.mockImplementation((selector) => selector({
+      signUpFields: {
+        id: '',
+        password: '',
+        passwordCheck: '',
+        nickname: '',
+      },
+      token: '',
       isLogin: false,
-    }))
-  })
+    }));
+  });
 
-  it('renders App', () =>{
+  it('renders App', () => {
     render(
       <MemoryRouter>
         <App />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   });
 
   it('when click SignUpButton in LoginPage', () => {
     render(
-      <MemoryRouter initialEntries={["/"]}>
+      <MemoryRouter initialEntries={['/']}>
         <App />
-      </MemoryRouter>
-    )
+      </MemoryRouter>,
+    );
 
-    fireEvent.click(screen.getByText("회원가입"));
+    fireEvent.click(screen.getByText('회원가입'));
 
-    expect(screen.getByText("가입")).toBeInTheDocument();
-  })
-})
+    expect(screen.getByText('가입')).toBeInTheDocument();
+  });
+});
