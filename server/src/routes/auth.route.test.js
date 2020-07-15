@@ -1,34 +1,44 @@
-import app from '../app';
-import JWTtoken from '../services/jwtToken.service';
+import request from 'supertest';
 
-const request = require('supertest');
+import app from '../app';
+
+import auth from '../services/auth.service';
+
+jest.mock('../services/auth.service');
 
 describe('/auth', () => {
+  const email = 'gibong@gmail.com';
+  const password = '1234';
+
+  const token = 'token';
+
   describe('POST /login', () => {
     context('with existing email and right password', () => {
-      const email = 'gibong@gmail.com';
-      const password = '1234';
+      beforeEach(() => {
+        auth.login.mockResolvedValue(token);
+      });
+
       it('returns status code of 200 and true', async () => {
-        const tokenTest = await JWTtoken.createToken({ email }); // test 용 token 만듬..... 여기서 만들어도 되나//?ㄴ
-        const { body, statusCode } = await request(app)
+        const { status, body } = await request(app)
           .post('/auth/login')
           .send({ userInfo: { email, password } });
 
-        expect(body.token).toBe(tokenTest);
-        expect(statusCode).toBe(200);
+        expect(status).toBe(200);
+        expect(body.token).toBe(token);
       });
     });
 
     context('with unexisting email', () => {
-      const email = 'UNEXISTING_EMAIL';
-      const password = 'ANY_PASSWORD';
+      beforeEach(() => {
+        auth.login.mockRejectedValue(new Error('login failed'));
+      });
+
       it('returns status code of 401 and error', async () => {
-        // const tokenTest = await JWTtoken.createToken({ email }); // test 용 token 만듬..... 여기서 만들어도 되나//?ㄴ
-        const { body, statusCode } = await request(app)
+        const { status } = await request(app)
           .post('/auth/login')
           .send({ userInfo: { email, password } });
 
-        expect(statusCode).toBe(401);
+        expect(status).toBe(400);
       });
     });
   });
