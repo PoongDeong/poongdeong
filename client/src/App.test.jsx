@@ -6,7 +6,6 @@ import {useSelector} from "react-redux";
 import { render, fireEvent, screen } from '@testing-library/react'
 
 import App from './App';
-import SignUpPage from "./pages/SignUpPage";
 
 jest.mock('react-redux');
 

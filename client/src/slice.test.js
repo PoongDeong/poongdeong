@@ -4,7 +4,7 @@ import { setIsLogin, setToken } from "./slice";
 describe('reducer', () =>{
   describe('setIsLogin', () =>{
     it('changes isLogin', () =>{
-      const state = reducer(undefined, setIsLogin(true));
+      const state = reducer(undefined, setIsLogin());
 
       expect(state.isLogin).toBe(true);
     })

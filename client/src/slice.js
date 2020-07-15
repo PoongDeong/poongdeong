@@ -24,15 +24,15 @@ const { actions, reducer } = createSlice({
     isLogin: false,
   },
   reducers: {
-    setIsLogin(state, {payload: isLogin}) {
+    setIsLogin(state) {
       return {
         ...state,
-        isLogin: true,
+        isLogin: !state.isLogin,
       }
     },
     setToken(state, {payload: token}) {
       return {...state, token};
-    }
+    },
   },
 });
 
