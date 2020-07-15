@@ -23,4 +23,20 @@ describe('user.repository', () => {
       });
     });
   });
+
+  describe('checkAvailability', () => {
+    context('with available name', () => {
+      it('returns true', () => {
+        const valid = userRepository.checkAvailability('gibong1@gmail.com');
+        expect(valid).toBe(true);
+      });
+    });
+
+    context('with unavailable name', () => {
+      it('returns false', () => {
+        const valid = userRepository.checkAvailability('gibong@gmail.com');
+        expect(valid).toBe(false);
+      });
+    });
+  });
 });
