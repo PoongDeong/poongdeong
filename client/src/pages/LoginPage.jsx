@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
-
-import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 const styles = {
   page: {
@@ -19,8 +17,8 @@ const styles = {
   input: {
     background: '#fafafa',
     border: '1px solid #dbdbdb',
-    padding: '7px 35px',
-    margin: '0px -10px 5px -10px',
+    padding: '10px 35px',
+    margin: '5px -10px 5px -10px',
   },
   form: {
     display: 'flex',
@@ -34,8 +32,8 @@ const styles = {
     backgroundColor: 'cornflowerblue',
     color: 'white',
     border: '1px solid #dbdbdb',
-    padding: '4px 0px',
-    margin: '6px -10px 5px -10px',
+    padding: '7px 0px',
+    margin: '6px -10px 0px -10px',
     width: '109%',
   },
   font: {
@@ -45,22 +43,20 @@ const styles = {
 };
 
 export default function LoginPage() {
-  const dispatch = useDispatch();
+  const history = useHistory();
 
-  const goToMainPage = () => {
-    dispatch();
+  const goToSignUpPage = () => {
+    history.push('/join');
   };
 
   return (
     <div css={styles.page}>
       <img css={styles.logo} src="../src/images/logo.png" alt="Logo" />
       <form
-        // onSubmit={handleSubmit(onSubmit)}
         css={styles.form}
       >
         <input
           defaultValue=""
-          // ref={register}
           placeholder="전화번호, 사용자 이름, 이메일"
           css={styles.input}
         />
@@ -73,13 +69,16 @@ export default function LoginPage() {
         <input
           type="submit"
           value="로그인"
-          onClick={goToMainPage}
           css={styles.button}
         />
+        <button
+          onClick={goToSignUpPage}
+          type="button"
+          css={styles.button}
+        >
+          회원가입
+        </button>
       </form>
-      <button type="button">
-        <Link to="/signup">회원가입</Link>
-      </button>
     </div>
   );
 }
