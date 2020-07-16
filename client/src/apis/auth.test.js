@@ -5,65 +5,46 @@ import { postLogin, postSignUp } from './auth';
 jest.mock('axios');
 
 describe('auth', () => {
+  const id = 'test@example.com';
+  const nickname = 'tester';
+  const password = '1234';
+
+  const TOKEN = '9999';
+
   describe('postSignUp', () => {
     beforeEach(() => {
-      axios.post.mockResolvedValue({ data: { token: '9999' } });
+      axios.post.mockResolvedValue({ data: { } });
     });
 
     it('responses token', async () => {
-      const id = 'test@example.com';
-      const nickname = 'tester';
-      const password = '1234';
-
       const token = await postSignUp({ id, nickname, password });
 
-      expect(token).toBe('9999');
+      expect(token).toEqual({});
     });
   });
 
   describe('postLogin', () => {
-    describe('with inexistent id', () => {
+    describe('with existent id and correct password', () => {
+      beforeEach(() => {
+        axios.post.mockResolvedValue({ data: { token: TOKEN } });
+      });
+
+      it('responses token', async () => {
+        const token = await postLogin({ id, password });
+
+        expect(token).toBe(TOKEN);
+      });
+    });
+
+    describe('with wrong id or wrong password', () => {
       beforeEach(() => {
         axios.post.mockResolvedValue({ data: { token: '' } });
       });
 
-      it('responses token', async () => {
-        const id = 'inexistent@example.com';
-        const password = '1234';
-
+      it('responses empty token', async () => {
         const token = await postLogin({ id, password });
 
-        expect(token).toBe('');
-      });
-    });
-
-    describe('with correct password', () => {
-      beforeEach(() => {
-        axios.post.mockResolvedValue({ data: { token: '9999' } });
-      });
-
-      it('responses token', async () => {
-        const id = 'test@example.com';
-        const password = '1234';
-
-        const token = await postLogin({ id, password });
-
-        expect(token).toBe('9999');
-      });
-    });
-
-    describe('with incorrect password', () => {
-      beforeEach(() => {
-        axios.post.mockResolvedValue({ data: { token: '' } });
-      });
-
-      it('responses token', async () => {
-        const id = 'test@example.com';
-        const password = '0000';
-
-        const token = await postLogin({ id, password });
-
-        expect(token).toBe('');
+        expect(token).toBeFalsy();
       });
     });
   });
