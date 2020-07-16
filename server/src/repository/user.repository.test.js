@@ -1,57 +1,111 @@
+import db from '../database';
+
+import createTable from '../hooks/create-table';
+
 import userRepository from './user.repository';
 
 describe('user.repository', () => {
-  describe('checkPassword', () => {
-    context('with existing id and right password', () => {
-      it('returns true', () => {
-        const valid = userRepository.checkPassword('gibong@gmail.com', '1234');
-        expect(valid).toBe(true);
-      });
+  const user = {
+    email: 'tester@exapmle.com',
+    password: '1234',
+    nickname: 'nickname',
+  };
+
+  beforeEach(async () => {
+    await db.schema.dropTableIfExists('users');
+    await createTable();
+  });
+
+  afterAll(async () => {
+    await db.destroy();
+  });
+
+  describe('create', () => {
+    it('inserts user to users table', async () => {
+      const result = await userRepository.create(user);
+
+      expect(result).toHaveLength(1);
     });
 
-    context('with unexisting id', () => {
-      it('returns false', () => {
-        const valid = userRepository.checkPassword('UNEXISTING_ID', 'ANY_PASSWORD');
-        expect(valid).toBe(false);
+    context('with duplicated email', () => {
+      beforeEach(async () => {
+        await userRepository.create(user);
       });
-    });
 
-    context('with existing id and wrong password', () => {
-      it('returns false', () => {
-        const valid = userRepository.checkPassword('gibong@gmail.com', 'WRONG_PASSWORD');
-        expect(valid).toBe(false);
+      it('inserts user to users table', async () => {
+        try {
+          await userRepository.create(user);
+        } catch (err) {
+          expect(err.code).toBe('ER_DUP_ENTRY');
+        }
       });
     });
   });
 
-  describe('checkAvailability', () => {
-    context('with available name', () => {
-      it('returns true', () => {
-        const valid = userRepository.checkAvailability('gibong1@gmail.com');
-        expect(valid).toBe(true);
-      });
+  describe('findById', () => {
+    let id;
+
+    beforeEach(async () => {
+      const ids = await userRepository.create(user);
+      [id] = ids;
     });
 
-    context('with unavailable name', () => {
-      it('returns false', () => {
-        const valid = userRepository.checkAvailability('gibong@gmail.com');
-        expect(valid).toBe(false);
+    it('returns user', async () => {
+      const foundUser = await userRepository.findById(id);
+
+      expect(foundUser.email).toBe(user.email);
+    });
+
+    context('with not existing user', () => {
+      it('returns user', async () => {
+        const foundUser = await userRepository.findById(1000);
+
+        expect(foundUser).toBeFalsy();
       });
     });
   });
 
-  describe('checkNicknameAvailability', () => {
-    context('with available nickname', () => {
-      it('returns true', () => {
-        const valid = userRepository.checkNickNameAvailability('AVAILABLE_NICKNAME');
-        expect(valid).toBe(true);
+  describe('findByNickname', () => {
+    context('with existing user', () => {
+      beforeEach(async () => {
+        await userRepository.create(user);
+      });
+
+      it('returns user', async () => {
+        const foundUser = await userRepository.findByNickname(user.nickname);
+
+        expect(foundUser.email).toBe(user.email);
+        expect(foundUser.nickname).toBe(user.nickname);
       });
     });
 
-    context('with unavailable nickname', () => {
-      it('returns false', () => {
-        const valid = userRepository.checkNickNameAvailability('기봉');
-        expect(valid).toBe(false);
+    context('with unexisting user', () => {
+      it('returns undefined', async () => {
+        const foundUser = await userRepository.findByNickname(user.nickname);
+
+        expect(foundUser).toBeUndefined();
+      });
+    });
+  });
+
+  describe('findByEmail', () => {
+    context('with existing user', () => {
+      beforeEach(async () => {
+        await userRepository.create(user);
+      });
+
+      it('returns user', async () => {
+        const foundUser = await userRepository.findByEmail(user.email);
+
+        expect(foundUser.email).toBe(user.email);
+      });
+    });
+
+    context('with unexisting user', () => {
+      it('returns undefined', async () => {
+        const foundUser = await userRepository.findByEmail(user.email);
+
+        expect(foundUser).toBeUndefined();
       });
     });
   });
