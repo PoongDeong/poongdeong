@@ -5,6 +5,8 @@ import { Route, Switch } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import SignUpPage from './pages/SignUpPage';
 import PomodoroPage from './pages/PomodoroPage';
+import MyPage from './pages/MyPage';
+import TimelinePage from './pages/TimelinePage';
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
       <Route exact path="/" component={MainPage} />
       <Route path="/signup" component={SignUpPage} />
       <Route path="/pomodoro" component={PomodoroPage} />
+      <Route path="/mypage" component={MyPage} />
+      <Route path="/timeline" component={TimelinePage} />
     </Switch>
   );
 }

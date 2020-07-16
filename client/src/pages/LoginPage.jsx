@@ -11,6 +11,7 @@ const styles = {
     alignItems: 'center',
   },
   logo: {
+    maxWidth: '200px',
     width: '60%',
     height: '60%',
     margin: '60px 0px',

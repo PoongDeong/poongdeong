@@ -11,7 +11,7 @@ const { actions, reducer } = createSlice({
       nickname: '',
     },
     token: '',
-    isLogin: false,
+    isLogin: true,
     isMenuOn: false,
   },
   reducers: {
