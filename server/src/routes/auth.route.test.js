@@ -9,6 +9,7 @@ jest.mock('../services/auth.service');
 describe('/auth', () => {
   const email = 'gibong@gmail.com';
   const password = '1234';
+  const nickname = 'gibong';
 
   const token = 'token';
 
@@ -40,6 +41,21 @@ describe('/auth', () => {
 
         expect(status).toBe(400);
       });
+    });
+  });
+
+  describe('POST /signup', () => {
+    it('responses created', async () => {
+      const { status, body } = await request(app)
+        .post('/auth/signup')
+        .send({
+          email,
+          password,
+          nickname,
+        });
+
+      expect(status).toBe(201);
+      expect(body).toEqual({});
     });
   });
 });

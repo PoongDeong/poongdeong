@@ -23,4 +23,36 @@ describe('user.repository', () => {
       });
     });
   });
+
+  describe('checkAvailability', () => {
+    context('with available name', () => {
+      it('returns true', () => {
+        const valid = userRepository.checkAvailability('gibong1@gmail.com');
+        expect(valid).toBe(true);
+      });
+    });
+
+    context('with unavailable name', () => {
+      it('returns false', () => {
+        const valid = userRepository.checkAvailability('gibong@gmail.com');
+        expect(valid).toBe(false);
+      });
+    });
+  });
+
+  describe('checkNicknameAvailability', () => {
+    context('with available nickname', () => {
+      it('returns true', () => {
+        const valid = userRepository.checkNickNameAvailability('AVAILABLE_NICKNAME');
+        expect(valid).toBe(true);
+      });
+    });
+
+    context('with unavailable nickname', () => {
+      it('returns false', () => {
+        const valid = userRepository.checkNickNameAvailability('기봉');
+        expect(valid).toBe(false);
+      });
+    });
+  });
 });
