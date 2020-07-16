@@ -1,8 +1,8 @@
 const userRepository = {
-  checkPassword: jest.fn(),
   create: jest.fn(),
-  checkNicknameAvailability: jest.fn(),
-  checkAvailability: jest.fn(),
+  findById: jest.fn(),
+  findByNickname: jest.fn(),
+  findByEmail: jest.fn(),
 };
 
 export default userRepository;

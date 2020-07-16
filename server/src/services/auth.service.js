@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+
 import userRepository from '../repository/user.repository';
 import jwtTokenService from './jwtToken.service';
 
@@ -5,25 +7,38 @@ const emailRegex = /\b^[A-Za-z0-9.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$\b/;
 
 const auth = {
   async login({ email, password }) {
-    const isCorrect = await userRepository.checkPassword(email, password);
-    if (!isCorrect) {
-      throw new Error('login failed');
+    const user = await userRepository.findByEmail(email);
+    if (!user) {
+      throw new Error('User not exist');
     }
 
-    return jwtTokenService.createToken({ email });
+    const isCorrect = await bcrypt.compare(password, user.password);
+    if (!isCorrect) {
+      throw new Error('User not exist');
+    }
+
+    return jwtTokenService.createToken({ id: user.id });
   },
 
   async signup({ email, password, nickname }) {
-    if (await this.isEmailFormat(email) === false) {
-      throw new Error('Invalid email format');
+    const errors = [];
+
+    let user = await userRepository.findByEmail(email);
+    if (user) {
+      errors.push('Email already exists');
     }
-    if (userRepository.checkAvailability(email) === false) {
-      throw new Error('Email already exists');
+    user = await userRepository.findByNickname(nickname);
+    if (user) {
+      errors.push('nickname already exists');
     }
-    if (userRepository.checkNicknameAvailability(nickname) === false) {
-      throw new Error('Nickname already exists');
+
+    if (errors.length > 0) {
+      return errors;
     }
-    await userRepository.create({ email, password, nickname });
+
+    const encrypted = await bcrypt.hash(password, 10);
+    await userRepository.create({ email, nickname, password: encrypted });
+    return '';
   },
 
   isEmailFormat(id) {
@@ -31,4 +46,4 @@ const auth = {
   },
 };
 
-module.exports = auth;
+export default auth;

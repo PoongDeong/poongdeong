@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+
 import authService from './auth.service';
 
 import jwtTokenService from './jwtToken.service';
@@ -6,11 +8,14 @@ import userRepository from '../repository/user.repository';
 
 jest.mock('../repository/user.repository');
 jest.mock('./jwtToken.service');
+jest.mock('bcrypt');
 
 describe('auth', () => {
   const email = 'gibong@gmail.com';
   const password = '1234';
   const nickname = 'NICK_NAME';
+
+  const user = { email, password, nickname };
 
   const token = 'abcd';
 
@@ -24,24 +29,39 @@ describe('auth', () => {
   });
 
   describe('login', () => {
-    beforeEach(async () => {
-      userRepository.checkPassword.mockResolvedValue(true);
-    });
-
     context('with given existing id and right password', () => {
+      beforeEach(async () => {
+        userRepository.findByEmail.mockResolvedValue(user);
+        bcrypt.compare.mockResolvedValue(true);
+      });
+
       it('returns a userInfo ', async () => {
         const userInfo = await authService.login({ email, password });
+
         expect(userInfo).toBe(token);
       });
     });
 
-    context('with given existing id and wrong password', () => {
+    context('with not existing user', () => {
       beforeEach(async () => {
-        userRepository.checkPassword.mockResolvedValue(false);
+        userRepository.findByEmail.mockResolvedValue(undefined);
+      });
+
+      it('throws error', () => {
+        expect(authService.login({ email, password })).rejects
+          .toThrow(new Error('User not exist'));
+      });
+    });
+
+    context('with incorrect password', () => {
+      beforeEach(async () => {
+        userRepository.findByEmail.mockResolvedValue(user);
+        bcrypt.compare.mockResolvedValue(false);
       });
 
       it('returns a userInfo ', () => {
-        expect(authService.login({ email, password })).rejects.toThrow(new Error('login failed'));
+        expect(authService.login({ email, password })).rejects
+          .toThrow(new Error('User not exist'));
       });
     });
   });
@@ -62,62 +82,52 @@ describe('auth', () => {
 
   describe('signup', () => {
     context('with valid user', () => {
-      it('creates user ', async () => {
-        await authService.signup({ email, password, nickname });
-        expect(userRepository.create).toBeCalledWith({ email, password, nickname });
-      });
-    });
-
-    context('with invalid user', () => {
       beforeEach(() => {
-        userRepository.create.mockRejectedValue(new Error('Already existing email'));
+        userRepository.findByEmail.mockResolvedValue(undefined);
+        userRepository.findByNickname.mockResolvedValue(undefined);
+        bcrypt.hash.mockResolvedValue(user.password);
       });
 
-      it('throws error', async () => {
-        try {
-          await authService.signup({ email, password, nickname });
-        } catch (err) {
-          expect(err).toEqual(new Error('Already existing email'));
-        }
-      });
-    });
-
-    context('with invalid email format', () => {
-      it('throws error', async () => {
-        try {
-          await authService.signup({ email: 'WRONG_EMAIL_FORMAT', password, nickname });
-        } catch (err) {
-          expect(err).toEqual(new Error('Invalid email format'));
-        }
+      it('creates user', async () => {
+        const errors = await authService.signup({ email, password, nickname });
+        expect(userRepository.create)
+          .toBeCalledWith({ email, password, nickname });
+        expect(errors).toBeFalsy();
       });
     });
 
     context('with existing email', () => {
       beforeEach(() => {
-        userRepository.checkAvailability.mockReturnValue(false);
+        userRepository.findByEmail.mockResolvedValue(user);
       });
 
-      it('throws error', async () => {
-        try {
-          await authService.signup({ email, password, nickname });
-        } catch (err) {
-          expect(err).toEqual(new Error('Email already exists'));
-        }
+      it('이메일이 중복일경우 이메일이 중복이라는 에러를 전달한다.', async () => {
+        const errors = await authService.signup({ email, password, nickname });
+        expect(errors).toEqual(['Email already exists']);
       });
     });
 
-    context('with unavailable nickname', () => {
+    context('with existing nickname', () => {
       beforeEach(() => {
-        userRepository.checkAvailability.mockReturnValue(true);
-        userRepository.checkNicknameAvailability.mockReturnValue(false);
+        userRepository.findByEmail.mockResolvedValue(undefined);
+        userRepository.findByNickname.mockResolvedValue(user);
       });
 
-      it('throws error', async () => {
-        try {
-          await authService.signup({ email, password, nickname });
-        } catch (err) {
-          expect(err).toEqual(new Error('Nickname already exists'));
-        }
+      it('닉네임이 중복일경우 닉네임이 중복이라는 에러를 전달한다.', async () => {
+        const errors = await authService.signup({ email, password, nickname });
+        expect(errors).toEqual(['nickname already exists']);
+      });
+    });
+
+    context('with existing email, nickname', () => {
+      beforeEach(() => {
+        userRepository.findByEmail.mockResolvedValue(user);
+        userRepository.findByNickname.mockResolvedValue(user);
+      });
+
+      it('닉네임, 이메일이 중복일경우 에러 두개를 전달한다.', async () => {
+        const errors = await authService.signup({ email, password, nickname });
+        expect(errors).toEqual(['Email already exists', 'nickname already exists']);
       });
     });
   });

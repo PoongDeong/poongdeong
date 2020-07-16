@@ -4,9 +4,9 @@ const privateKey = 'PRIVATE_KEY';
 
 const JWTToken = {
 
-  createToken({ email }) {
+  createToken(data) {
     return jwt.sign(
-      { email },
+      data,
       privateKey,
       { expiresIn: '17h', subject: 'userInfo' },
     );

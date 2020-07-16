@@ -1,17 +1,24 @@
-import userInfoStorage from '../jsonStorage/user.json';
+import db from '../database';
 
 const userRepository = {
-  checkPassword(email, password) {
-    return !!userInfoStorage.find((user) => (user.email === email && user.password === password));
+  async create(user) {
+    return await db('users').insert(user);
   },
 
-  checkAvailability(email) {
-    return !userInfoStorage.find((user) => (user.email === email));
+  async findById(id) {
+    const users = await db('users').where({ id });
+    return users[0];
   },
 
-  checkNickNameAvailability(nickname) {
-    return !userInfoStorage.find((user) => (user.nickname === nickname));
+  async findByNickname(nickname) {
+    const users = await db('users').where({ nickname });
+    return users[0];
+  },
+
+  async findByEmail(email) {
+    const users = await db('users').where({ email });
+    return users[0];
   },
 };
 
-module.exports = userRepository;
+export default userRepository;
