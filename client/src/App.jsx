@@ -12,7 +12,7 @@ function App() {
   return (
     <Switch>
       <Route exact path="/" component={MainPage} />
-      <Route path="/join" component={SignUpPage} />
+      <Route path="/signup" component={SignUpPage} />
       <Route path="/pomodoro" component={PomodoroPage} />
       <Route path="/mypage" component={MyPage} />
       <Route path="/timeline" component={TimelinePage} />

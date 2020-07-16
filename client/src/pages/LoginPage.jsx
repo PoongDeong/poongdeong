@@ -46,7 +46,7 @@ export default function LoginPage() {
   const history = useHistory();
 
   const goToSignUpPage = () => {
-    history.push('/join');
+    history.push('/signup');
   };
 
   return (
