@@ -7,11 +7,11 @@ export const postSignUp = async ({ id, nickname, password }) => {
     id, nickname, password,
   });
 
-  return data.token;
+  return data;
 };
 
 export const postLogin = async ({ id, password }) => {
-  const { data } = await axios.post(API_URL, {
+  const { data } = await axios.post(`${API_URL}/login`, {
     id, password,
   });
 
