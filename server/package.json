@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/server.js",
+    "start": "nodemon --exec babel-node src/run.js",
     "lint": "eslint \"src/**/*.js\"",
     "build": "babel src/ --out-dir dist --delete-dir-on-start --ignore \"**/*.test.js\"",
     "test": "jest --runInBand --detectOpenHandles"
@@ -35,6 +35,9 @@
     "express-validator": "^6.6.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.2",
-    "mysql2": "^2.1.0"
+    "mysql2": "^2.1.0",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
+    "socketio-jwt": "^4.6.2"
   }
 }

@@ -12,4 +12,4 @@ COPY ./dist ./dist
 RUN rm package.json 
 RUN rm package-lock.json
 
-ENTRYPOINT [ "node", "./dist/server.js" ]
+ENTRYPOINT [ "node", "./dist/run.js" ]
