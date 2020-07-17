@@ -61,10 +61,15 @@ describe('/auth', () => {
       it('resposnes 404 error', async () => {
         const { status, body } = await request(app)
           .post('/auth/login')
-          .send({ email });
+          .send({ password });
 
-        expect(status).toBe(404);
-        expect(body.message).toBe('Empty value');
+        const { errors } = body;
+        const { msg, param, location } = errors[0];
+
+        expect(status).toBe(422);
+        expect(msg).toBe('Invalid value');
+        expect(param).toBe('email');
+        expect(location).toBe('body');
       });
     });
   });
@@ -126,8 +131,13 @@ describe('/auth', () => {
           .post('/auth/signup')
           .send({ password });
 
-        expect(status).toBe(404);
-        expect(body.message).toBe('Empty value');
+        const { errors } = body;
+        const { msg, param, location } = errors[0];
+
+        expect(status).toBe(422);
+        expect(msg).toBe('Invalid value');
+        expect(param).toBe('email');
+        expect(location).toBe('body');
       });
     });
   });
