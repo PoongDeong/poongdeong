@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setMatchingTimer } from '../slice';
+import { setMatchingWaitingTimer } from '../slice';
 
 const styles = {
   text: {
@@ -16,14 +16,14 @@ const styles = {
 export default function MatchingWaitTimer() {
   const dispatch = useDispatch();
 
-  const matchingTimer = useSelector((state) => state.matchingTimer);
+  const matchingWaitingTimer = useSelector((state) => state.matchingWaitingTimer);
   const matchingButtonState = useSelector((state) => state.matchingButtonState);
 
   const WAITING_TIME_TO_ADD = 0.1;
 
   if (matchingButtonState) {
     const intervalTimer = setInterval(() => {
-      dispatch(setMatchingTimer(matchingTimer + WAITING_TIME_TO_ADD));
+      dispatch(setMatchingWaitingTimer(matchingWaitingTimer + WAITING_TIME_TO_ADD));
       clearInterval(intervalTimer);
     }, 100);
   }
@@ -35,7 +35,7 @@ export default function MatchingWaitTimer() {
           <div css={styles.text}>
             대기시간:
             {' '}
-            {matchingTimer.toFixed(1)}
+            {matchingWaitingTimer.toFixed(1)}
             초
           </div>
         )

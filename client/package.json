@@ -18,7 +18,8 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "axios": "^0.19.2",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "sweetalert2": "^9.17.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
