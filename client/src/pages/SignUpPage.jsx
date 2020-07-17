@@ -4,7 +4,11 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  requestSignUp, setSignUpId, setSignUpNickName, setSignUpPassword, setSignUpPasswordCheck,
+  requestSignUp,
+  setSignUpEmail,
+  setSignUpNickName,
+  setSignUpPassword,
+  setSignUpPasswordCheck,
 } from '../slice';
 
 const styles = {
@@ -46,7 +50,7 @@ export default function SignUpPage() {
   const { signUpFields } = useSelector((state) => state);
 
   const {
-    password, passwordCheck, id, nickname,
+    password, passwordCheck, email, nickname,
   } = signUpFields;
 
   const handleSubmit = (e) => {
@@ -66,10 +70,10 @@ export default function SignUpPage() {
 
     setError({ message });
 
-    if (id && nickname && password && password === passwordCheck) {
+    if (email && nickname && password && password === passwordCheck) {
       setIsSubmitable('');
     }
-  }, [password, passwordCheck, id, nickname]);
+  }, [password, passwordCheck, email, nickname]);
 
   return (
     <form onSubmit={handleSubmit} css={styles.form}>
@@ -79,7 +83,7 @@ export default function SignUpPage() {
         회원가입을 진행합니다
       </h3>
       <input
-        onChange={(e) => dispatch(setSignUpId(e.target.value))}
+        onChange={(e) => dispatch(setSignUpEmail(e.target.value))}
         defaultValue=""
         placeholder="poongdeong@example.com"
         css={styles.input}

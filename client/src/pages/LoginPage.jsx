@@ -1,6 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useHistory } from 'react-router-dom';
+
+import { useDispatch } from 'react-redux';
+
+import { postLogin } from '../apis/auth';
+
+import LoginErrorMessage from '../components/LoginErrorMessage';
+
+import { toggleLoginState } from '../slice';
 
 const styles = {
   page: {
@@ -44,9 +52,31 @@ const styles = {
 
 export default function LoginPage() {
   const history = useHistory();
+  const dispatch = useDispatch();
 
-  const goToSignUpPage = () => {
-    history.push('/signup');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [tokenState, setTokenState] = useState('');
+  const [isErrorMessage, setIsErrorMessage] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem(('token'))) {
+      dispatch(toggleLoginState());
+    }
+  }, [tokenState]);
+
+  const handleUserEmail = (inputEmail) => setEmail(inputEmail);
+  const handleUserPassword = (inputPassword) => setPassword(inputPassword);
+  const goToSignUpPage = () => history.push('/signup');
+
+  const submitUserInfo = async () => {
+    try {
+      const token = await postLogin({ email, password });
+      await setTokenState(token);
+      await localStorage.setItem('token', token);
+    } catch (e) {
+      setIsErrorMessage(true);
+    }
   };
 
   return (
@@ -56,21 +86,26 @@ export default function LoginPage() {
         css={styles.form}
       >
         <input
-          defaultValue=""
-          placeholder="example@test.com"
+          onChange={(e) => handleUserEmail(e.target.value)}
+          value={email}
           css={styles.input}
+          placeholder="example@test.com"
         />
         <input
+          onChange={(e) => handleUserPassword(e.target.value)}
+          value={password}
           type="password"
-          defaultValue=""
           placeholder="password"
           css={styles.input}
         />
-        <input
-          type="submit"
-          value="로그인"
+        {isErrorMessage && <LoginErrorMessage />}
+        <button
+          onClick={submitUserInfo}
+          type="button"
           css={styles.button}
-        />
+        >
+          로그인
+        </button>
         <button
           onClick={goToSignUpPage}
           type="button"

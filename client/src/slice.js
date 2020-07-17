@@ -1,22 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import Swal from 'sweetalert2';
+
 import { postSignUp } from './apis/auth';
 
 const { actions, reducer } = createSlice({
   name: 'app',
   initialState: {
     signUpFields: {
-      id: '',
+      email: '',
       password: '',
       passwordCheck: '',
       nickname: '',
     },
+    loginFields: {
+      email: '',
+      password: '',
+    },
     token: '',
-    loginState: true,
+    loginState: false,
     timeOption: '',
     categoryOption: '',
     matchingButtonState: false,
-    matchingTimer: 1,
+    matchingWaitingTimer: 1,
   },
   reducers: {
     toggleLoginState(state) {
@@ -28,8 +34,8 @@ const { actions, reducer } = createSlice({
     setToken(state, { payload: token }) {
       return { ...state, token };
     },
-    setSignUpId(state, { payload: id }) {
-      return { ...state, signUpFields: { ...state.signUpFields, id } };
+    setSignUpEmail(state, { payload: email }) {
+      return { ...state, signUpFields: { ...state.signUpFields, email } };
     },
     setSignUpPassword(state, { payload: password }) {
       return { ...state, signUpFields: { ...state.signUpFields, password } };
@@ -49,8 +55,8 @@ const { actions, reducer } = createSlice({
     toggleMatchingButton(state) {
       return { ...state, matchingButtonState: !state.matchingButtonState };
     },
-    setMatchingTimer(state, { payload: matchingTimer }) {
-      return { ...state, matchingTimer };
+    setMatchingWaitingTimer(state, { payload: matchingWaitingTimer }) {
+      return { ...state, matchingWaitingTimer };
     },
   },
 });
@@ -58,25 +64,41 @@ const { actions, reducer } = createSlice({
 export const {
   toggleLoginState,
   setToken,
-  setSignUpId,
+  setSignUpEmail,
   setSignUpPassword,
   setSignUpPasswordCheck,
   setSignUpNickName,
   setTimeOption,
   setCategoryOption,
   toggleMatchingButton,
-  setMatchingTimer,
+  setMatchingWaitingTimer,
 } = actions;
+
+const first = (arr) => arr[0];
+
+const alertError = async (e) => {
+  const errorReasons = {
+    email: '이메일이 올바르지 않습니다.',
+    'Email already exists': '중복되는 이메일입니다.',
+    'nickname already exists': '중복되는 닉네임입니다.',
+  };
+
+  const { errors } = e.response.data;
+  const error = first(errors).param || first(errors);
+
+  await Swal.fire({ icon: 'error', text: errorReasons[error] });
+};
 
 export function requestSignUp(history) {
   return async (dispatch, getState) => {
     const { signUpFields } = getState();
 
-    const token = await postSignUp(signUpFields);
-
-    dispatch(setToken(token));
-
-    history.push('/');
+    try {
+      await postSignUp(signUpFields);
+      history.push('/');
+    } catch (e) {
+      await alertError(e);
+    }
   };
 }
 
