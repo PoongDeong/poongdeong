@@ -6,11 +6,11 @@ import LoginPage from './LoginPage';
 import MatchingPage from './MatchingPage';
 
 export default function MainPage() {
-  const { isLogin } = useSelector((state) => state);
+  const { loginState } = useSelector((state) => state);
 
   return (
     <>
-      {isLogin
+      {loginState
         ? <MatchingPage />
         : <LoginPage />}
     </>

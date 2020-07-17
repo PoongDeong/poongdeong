@@ -57,13 +57,13 @@ export default function LoginPage() {
       >
         <input
           defaultValue=""
-          placeholder="전화번호, 사용자 이름, 이메일"
+          placeholder="example@test.com"
           css={styles.input}
         />
         <input
           type="password"
           defaultValue=""
-          placeholder="비밀번호"
+          placeholder="password"
           css={styles.input}
         />
         <input

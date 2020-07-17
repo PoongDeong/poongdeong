@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import { postSignUp } from './apis/auth';
 
 const { actions, reducer } = createSlice({
@@ -11,14 +12,17 @@ const { actions, reducer } = createSlice({
       nickname: '',
     },
     token: '',
-    isLogin: false,
-    isMenuOn: false,
+    loginState: true,
+    timeOption: '',
+    categoryOption: '',
+    matchingButtonState: false,
+    matchingTimer: 1,
   },
   reducers: {
-    setIsLogin(state) {
+    toggleLoginState(state) {
       return {
         ...state,
-        isLogin: !state.isLogin,
+        loginState: !state.loginState,
       };
     },
     setToken(state, { payload: token }) {
@@ -36,20 +40,32 @@ const { actions, reducer } = createSlice({
     setSignUpNickName(state, { payload: nickname }) {
       return { ...state, signUpFields: { ...state.signUpFields, nickname } };
     },
-    setIsMenuOn(state) {
-      return { ...state, isMenuOn: !state.isMenuOn };
+    setTimeOption(state, { payload: timeOption }) {
+      return { ...state, timeOption };
+    },
+    setCategoryOption(state, { payload: categoryOption }) {
+      return { ...state, categoryOption };
+    },
+    toggleMatchingButton(state) {
+      return { ...state, matchingButtonState: !state.matchingButtonState };
+    },
+    setMatchingTimer(state, { payload: matchingTimer }) {
+      return { ...state, matchingTimer };
     },
   },
 });
 
 export const {
-  setIsLogin,
+  toggleLoginState,
   setToken,
   setSignUpId,
   setSignUpPassword,
   setSignUpPasswordCheck,
   setSignUpNickName,
-  setIsMenuOn,
+  setTimeOption,
+  setCategoryOption,
+  toggleMatchingButton,
+  setMatchingTimer,
 } = actions;
 
 export function requestSignUp(history) {
