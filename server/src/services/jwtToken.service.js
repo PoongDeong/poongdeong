@@ -1,9 +1,8 @@
 import jwt from 'jsonwebtoken';
 
-const privateKey = 'PRIVATE_KEY';
+const privateKey = process.env.SECRET;
 
 const JWTToken = {
-
   createToken(data) {
     return jwt.sign(
       data,
@@ -17,4 +16,4 @@ const JWTToken = {
   },
 };
 
-module.exports = JWTToken;
+export default JWTToken;
