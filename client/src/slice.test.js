@@ -8,7 +8,7 @@ describe('reducer', () => {
     it('changes isLogin', () => {
       const state = reducer(undefined, setIsLogin());
 
-      expect(state.isLogin).toBe(!state);
+      expect(state.isLogin).toBe(false);
     });
   });
 
