@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
+
 import { setMatchingTimer } from '../slice';
 
 const styles = {
@@ -17,9 +19,11 @@ export default function MatchingWaitTimer() {
   const matchingTimer = useSelector((state) => state.matchingTimer);
   const isMatchingButtonClicked = useSelector((state) => state.isMatchingButtonClicked);
 
+  const DECI_SECOND = 0.1;
+
   if (isMatchingButtonClicked) {
     const intervalTimer = setInterval(() => {
-      dispatch(setMatchingTimer(matchingTimer + 0.1));
+      dispatch(setMatchingTimer(matchingTimer + DECI_SECOND));
       clearInterval(intervalTimer);
     }, 100);
   }
