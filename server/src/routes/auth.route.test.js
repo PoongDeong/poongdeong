@@ -56,6 +56,17 @@ describe('/auth', () => {
         expect(status).toBe(500);
       });
     });
+
+    context('without all inputs', () => {
+      it('resposnes 404 error', async () => {
+        const { status, body } = await request(app)
+          .post('/auth/login')
+          .send({ email });
+
+        expect(status).toBe(404);
+        expect(body.message).toBe('Empty value');
+      });
+    });
   });
 
   describe('POST /signup', () => {
@@ -72,7 +83,7 @@ describe('/auth', () => {
       expect(body).toEqual({});
     });
 
-    context('이미 존재하는 유저가 있을때 에러를 전달한다. ', () => {
+    context('with existing email', () => {
       beforeEach(() => {
         auth.signup.mockResolvedValue(['Email already exists']);
       });
@@ -106,6 +117,17 @@ describe('/auth', () => {
           });
 
         expect(status).toBe(500);
+      });
+    });
+
+    context('without all inputs', () => {
+      it('resposnes 404 error', async () => {
+        const { status, body } = await request(app)
+          .post('/auth/signup')
+          .send({ password });
+
+        expect(status).toBe(404);
+        expect(body.message).toBe('Empty value');
       });
     });
   });
