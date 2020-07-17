@@ -1,9 +1,10 @@
 import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { setIsMatchingButtonClicked, setMatchingTimer } from '../slice';
+import { toggleMatchingButton, setMatchingTimer } from '../slice';
 
 const styles = {
   box: {
@@ -38,20 +39,20 @@ const styles = {
 };
 
 function MatchingButton() {
-  const isMatchingButtonClicked = useSelector((state) => state.isMatchingButtonClicked);
+  const matchingButtonState = useSelector((state) => state.matchingButtonState);
   const dispatch = useDispatch();
 
   const INITIAL_SECOND = 1;
 
   const changeState = () => {
-    dispatch(setIsMatchingButtonClicked());
+    dispatch(toggleMatchingButton());
     dispatch(setMatchingTimer(INITIAL_SECOND));
   };
 
   return (
     <div>
       <div css={styles.box}>
-        {isMatchingButtonClicked
+        {matchingButtonState
           ? (
             <button
               onClick={changeState}
@@ -77,7 +78,6 @@ function MatchingButton() {
           )}
       </div>
     </div>
-
   );
 }
 

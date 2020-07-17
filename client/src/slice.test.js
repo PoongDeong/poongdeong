@@ -1,14 +1,22 @@
 import reducer, {
-  setSignUpNickName, setSignUpPassword, setSignUpPasswordCheck,
-  setIsLogin, setToken, setSignUpId, setTimeOption, setCategoryOption, setIsMatchingButtonClicked,
+  setSignUpNickName,
+  setSignUpPassword,
+  setSignUpPasswordCheck,
+  toggleLoginState,
+  setToken,
+  setSignUpId,
+  setTimeOption,
+  setCategoryOption,
+  toggleMatchingButton,
 } from './slice';
 
 describe('reducer', () => {
-  describe('setIsLogin', () => {
-    it('changes isLogin', () => {
-      const state = reducer(undefined, setIsLogin());
+  describe('toggleLoginState', () => {
+    it('changes loginState', () => {
+      const loginState = false;
+      const state = reducer({ loginState }, toggleLoginState());
 
-      expect(state.isLogin).toBe(false);
+      expect(state.loginState).toBe(!loginState);
     });
   });
 
@@ -82,11 +90,11 @@ describe('reducer', () => {
     });
   });
 
-  describe('setIsMatchingButtonClicked', () => {
-    it('changes isMatchingButtonClicked state', () => {
-      const state = reducer(undefined, setIsMatchingButtonClicked());
+  describe('toggleMatchingButton', () => {
+    it('changes matchingButtonState state', () => {
+      const state = reducer(undefined, toggleMatchingButton());
 
-      expect(state.isMatchingButtonClicked).toBe(true);
+      expect(state.matchingButtonState).toBe(true);
     });
   });
 });

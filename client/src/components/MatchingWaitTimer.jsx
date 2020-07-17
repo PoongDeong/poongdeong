@@ -17,20 +17,20 @@ export default function MatchingWaitTimer() {
   const dispatch = useDispatch();
 
   const matchingTimer = useSelector((state) => state.matchingTimer);
-  const isMatchingButtonClicked = useSelector((state) => state.isMatchingButtonClicked);
+  const matchingButtonState = useSelector((state) => state.matchingButtonState);
 
-  const DECI_SECOND = 0.1;
+  const WAITING_TIME_TO_ADD = 0.1;
 
-  if (isMatchingButtonClicked) {
+  if (matchingButtonState) {
     const intervalTimer = setInterval(() => {
-      dispatch(setMatchingTimer(matchingTimer + DECI_SECOND));
+      dispatch(setMatchingTimer(matchingTimer + WAITING_TIME_TO_ADD));
       clearInterval(intervalTimer);
     }, 100);
   }
 
   return (
     <div>
-      {isMatchingButtonClicked
+      {matchingButtonState
         ? (
           <div css={styles.text}>
             대기시간:

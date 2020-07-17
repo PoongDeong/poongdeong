@@ -19,7 +19,7 @@ describe('App', () => {
         nickname: '',
       },
       token: '',
-      isLogin: false,
+      loginState: false,
     }));
   });
 
