@@ -1,7 +1,6 @@
-import { useSelector } from 'react-redux';
 import reducer, {
-  setIsMenuOn, setSignUpNickName, setSignUpPassword, setSignUpPasswordCheck,
-  setIsLogin, setToken, setSignUpId,
+  setSignUpNickName, setSignUpPassword, setSignUpPasswordCheck,
+  setIsLogin, setToken, setSignUpId, setTimeOption, setCategoryOption, setIsMatchingButtonClicked,
 } from './slice';
 
 describe('reducer', () => {
@@ -9,7 +8,7 @@ describe('reducer', () => {
     it('changes isLogin', () => {
       const state = reducer(undefined, setIsLogin());
 
-      expect(state.isLogin).toBe(true);
+      expect(state.isLogin).toBe(!state);
     });
   });
 
@@ -63,11 +62,31 @@ describe('reducer', () => {
     });
   });
 
-  describe('setIsMenuOn', () => {
-    const beforeState = useSelector((state) => state.isMenuOn);
+  describe('setTimeOption', () => {
+    const selectedTime = '25분';
 
-    it('changes menu state', () => {
-      expect(reducer(undefined, setIsMenuOn()).isMenuOn).toBe(!beforeState);
+    it('sets time option state', () => {
+      const state = reducer(undefined, setTimeOption(selectedTime));
+
+      expect(state.timeOption).toBe(selectedTime);
+    });
+  });
+
+  describe('setCategoryOption', () => {
+    const selectedCategory = '독서';
+
+    it('sets category option state', () => {
+      const state = reducer(undefined, setCategoryOption(selectedCategory));
+
+      expect(state.categoryOption).toBe(selectedCategory);
+    });
+  });
+
+  describe('setIsMatchingButtonClicked', () => {
+    it('changes isMatchingButtonClicked state', () => {
+      const state = reducer(undefined, setIsMatchingButtonClicked());
+
+      expect(state.isMatchingButtonClicked).toBe(true);
     });
   });
 });

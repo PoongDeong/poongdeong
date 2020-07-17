@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   root: {
     width: '100%',
     position: 'fixed',
-    bottom: '20px',
+    bottom: '0px',
     right: '5px',
   },
 });

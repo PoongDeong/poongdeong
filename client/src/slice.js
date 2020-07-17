@@ -11,8 +11,11 @@ const { actions, reducer } = createSlice({
       nickname: '',
     },
     token: '',
-    isLogin: false,
-    isMenuOn: false,
+    isLogin: true,
+    timeOption: '',
+    categoryOption: '',
+    isMatchingButtonClicked: false,
+    matchingTimer: 1,
   },
   reducers: {
     setIsLogin(state) {
@@ -36,8 +39,17 @@ const { actions, reducer } = createSlice({
     setSignUpNickName(state, { payload: nickname }) {
       return { ...state, signUpFields: { ...state.signUpFields, nickname } };
     },
-    setIsMenuOn(state) {
-      return { ...state, isMenuOn: !state.isMenuOn };
+    setTimeOption(state, { payload: timeOption }) {
+      return { ...state, timeOption };
+    },
+    setCategoryOption(state, { payload: categoryOption }) {
+      return { ...state, categoryOption };
+    },
+    setIsMatchingButtonClicked(state) {
+      return { ...state, isMatchingButtonClicked: !state.isMatchingButtonClicked };
+    },
+    setMatchingTimer(state, { payload: matchingTimer }) {
+      return { ...state, matchingTimer };
     },
   },
 });
@@ -49,7 +61,10 @@ export const {
   setSignUpPassword,
   setSignUpPasswordCheck,
   setSignUpNickName,
-  setIsMenuOn,
+  setTimeOption,
+  setCategoryOption,
+  setIsMatchingButtonClicked,
+  setMatchingTimer,
 } = actions;
 
 export function requestSignUp(history) {

@@ -1,7 +1,8 @@
 import React from 'react';
 
-import MatchingOptCheckBox from './MatchingOptCheckBox';
 import MatchingOptMemo from './MatchingOptMemo';
+import TimeOptionContainer from './TimeOptionContainer';
+import CategoryOptionContainer from './CategoryOptionContainer';
 
 const styles = {
   box: {
@@ -10,14 +11,15 @@ const styles = {
     alignItems: 'center',
     backgroundColor: 'white',
     margin: '10px',
-    width: '100%',
     borderRadius: '10px',
-  },
-  radio: {
     float: 'left',
-    width: '80%',
-    marginTop: '10px',
+    width: '90%',
+    marginTop: '50px',
     marginBottom: '20px',
+  },
+  subtitle: {
+    fontSize: '20px',
+    fontWeight: 'bold',
   },
 };
 
@@ -25,16 +27,13 @@ export default function MatchingOpt() {
   return (
     <div css={styles.box}>
       <div css={styles.radio}>
-        <hr />
-        <span>시간</span>
-        <MatchingOptCheckBox selection={['25분', '50분']} info="time_info" />
-        <hr />
-        <span>무엇에 빠지실건가요?</span>
-        <MatchingOptCheckBox selection={['공부', '코딩', '독서']} info="category_info" />
-        <hr />
+        <span css={styles.subtitle}>시간</span>
+        <TimeOptionContainer />
+        <span css={styles.subtitle}>무엇에 빠지실건가요?</span>
+        <CategoryOptionContainer />
+        <span css={styles.subtitle}>목표를 작성하세요</span>
+        <MatchingOptMemo />
       </div>
-      <span>목표를 작성하세요</span>
-      <MatchingOptMemo />
     </div>
   );
 }

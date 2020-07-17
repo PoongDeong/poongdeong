@@ -1,4 +1,6 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCategoryOption, setTimeOption } from '../slice';
 
 const styles = {
   box: {
@@ -6,6 +8,7 @@ const styles = {
   },
   button: {
     margin: '0',
+    fontSize: '15px',
     padding: '.75em 1.5em',
     boxSizing: 'border-box',
     position: 'relative',
@@ -14,32 +17,66 @@ const styles = {
     backgroundColor: '#FFF',
     lineHeight: '140%',
     textAlign: 'center',
-    boxShadow: '0 0 0 rgba(255, 255, 255, 0)',
     transition: 'border-color .15s ease-out,  color .25s ease-out,  background-color .15s ease-out, box-shadow .15s ease-out',
     cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: '#4B9DEA',
-      color: '#FFF',
-      boxShadow: '0 0 10px rgba(102, 179, 251, 0.5)',
-      borderColor: '#4B9DEA',
-      zIndex: '1',
-    },
+    outline: 'none',
   },
-  radio: {
-    display: 'none',
+  activeButton: {
+    margin: '0',
+    fontSize: '15px',
+    padding: '.75em 1.5em',
+    boxSizing: 'border-box',
+    position: 'relative',
+    display: 'inline-block',
+    border: 'solid 1px #DDD',
+    backgroundColor: '#9a9a9a',
+    color: '#FFF',
+    lineHeight: '140%',
+    textAlign: 'center',
+    transition: 'border-color .15s ease-out,  color .25s ease-out,  background-color .15s ease-out, box-shadow .15s ease-out',
+    cursor: 'pointer',
+    outline: 'none',
   },
 };
 
 export default function MatchingOptCheckBox({ selection, info }) {
+  const dispatch = useDispatch();
+  const selector = useSelector((v) => v);
+
+  const handleRadio = (e) => {
+    if (info === 'timeOption') {
+      dispatch(setTimeOption(e.target.value));
+    }
+    if (info === 'categoryOption') {
+      dispatch(setCategoryOption(e.target.value));
+    }
+  };
+
   return (
     <div css={styles.box}>
       {selection.map((v) => (
         <span key={v}>
-          <label htmlFor={v}>
-            <button css={styles.button} type="button">{v}</button>
-          </label>
-
-          <input id={v} type="radio" name={info} css={styles.radio} />
+          {v !== selector[info]
+            ? (
+              <button
+                onClick={(e) => handleRadio(e)}
+                css={styles.button}
+                type="button"
+                value={v}
+              >
+                {v}
+              </button>
+            )
+            : (
+              <button
+                onClick={(e) => handleRadio(e)}
+                css={styles.activeButton}
+                type="button"
+                value={v}
+              >
+                {v}
+              </button>
+            )}
         </span>
       ))}
     </div>
