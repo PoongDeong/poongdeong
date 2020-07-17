@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import { postSignUp } from './apis/auth';
 
 const { actions, reducer } = createSlice({
@@ -11,17 +12,17 @@ const { actions, reducer } = createSlice({
       nickname: '',
     },
     token: '',
-    isLogin: true,
+    loginState: true,
     timeOption: '',
     categoryOption: '',
-    isMatchingButtonClicked: false,
+    matchingButtonState: false,
     matchingTimer: 1,
   },
   reducers: {
-    setIsLogin(state) {
+    toggleLoginState(state) {
       return {
         ...state,
-        isLogin: !state.isLogin,
+        loginState: !state.loginState,
       };
     },
     setToken(state, { payload: token }) {
@@ -45,8 +46,8 @@ const { actions, reducer } = createSlice({
     setCategoryOption(state, { payload: categoryOption }) {
       return { ...state, categoryOption };
     },
-    setIsMatchingButtonClicked(state) {
-      return { ...state, isMatchingButtonClicked: !state.isMatchingButtonClicked };
+    toggleMatchingButton(state) {
+      return { ...state, matchingButtonState: !state.matchingButtonState };
     },
     setMatchingTimer(state, { payload: matchingTimer }) {
       return { ...state, matchingTimer };
@@ -55,7 +56,7 @@ const { actions, reducer } = createSlice({
 });
 
 export const {
-  setIsLogin,
+  toggleLoginState,
   setToken,
   setSignUpId,
   setSignUpPassword,
@@ -63,7 +64,7 @@ export const {
   setSignUpNickName,
   setTimeOption,
   setCategoryOption,
-  setIsMatchingButtonClicked,
+  toggleMatchingButton,
   setMatchingTimer,
 } = actions;
 
