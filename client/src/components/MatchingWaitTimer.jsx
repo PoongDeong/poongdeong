@@ -1,17 +1,42 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setMatchingTimer } from '../slice';
 
 const styles = {
   text: {
-    marginBottom: '20px',
-    color: '#bbdefb',
+    marginBottom: '10px',
+    color: '#005cb2',
+    fontWeight: 'bold',
     textAlign: 'center',
   },
 };
 
 export default function MatchingWaitTimer() {
+  const dispatch = useDispatch();
+
+  const matchingTimer = useSelector((state) => state.matchingTimer);
+  const isMatchingButtonClicked = useSelector((state) => state.isMatchingButtonClicked);
+
+  if (isMatchingButtonClicked) {
+    const intervalTimer = setInterval(() => {
+      dispatch(setMatchingTimer(matchingTimer + 0.1));
+      clearInterval(intervalTimer);
+    }, 100);
+  }
+
   return (
-    <div css={styles.text}>
-      대기시간: 11초
+    <div>
+      {isMatchingButtonClicked
+        ? (
+          <div css={styles.text}>
+            대기시간:
+            {' '}
+            {matchingTimer.toFixed(1)}
+            초
+          </div>
+        )
+        : <div />}
     </div>
+
   );
 }

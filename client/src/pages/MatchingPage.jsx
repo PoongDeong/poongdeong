@@ -1,7 +1,7 @@
 import React from 'react';
 
 import BottomMenu from '../components/BottomMenu';
-import MatchingBtn from '../components/MatchingBtn';
+import MatchingButton from '../components/MatchingButton';
 import MatchingOpt from '../components/MatchingOpt';
 import MatchingWaitTimer from '../components/MatchingWaitTimer';
 
@@ -24,8 +24,8 @@ export default function MatchingPage() {
       <div css={styles.option}>
         <MatchingOpt />
       </div>
+      <MatchingButton />
       <MatchingWaitTimer />
-      <MatchingBtn />
       <BottomMenu />
     </div>
   );
