@@ -1,9 +1,11 @@
 import express from 'express';
 import authService from '../services/auth.service';
+import loginValidator from '../validator/loginValidator';
+import signupValidator from '../validator/signupValidator';
 
 const router = express.Router();
 
-router.post('/login', async (req, res) => {
+router.post('/login', loginValidator, async (req, res) => {
   const { email, password } = req.body;
   try {
     const token = await authService.login({ email, password });
@@ -19,7 +21,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.post('/signup', async (req, res) => {
+router.post('/signup', signupValidator, async (req, res) => {
   const { email, password, nickname } = req.body;
   try {
     const errors = await authService.signup({ email, password, nickname });
