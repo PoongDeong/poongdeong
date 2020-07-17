@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { toggleMatchingButton, setMatchingTimer } from '../slice';
+import { toggleMatchingButton, setMatchingWaitingTimer } from '../slice';
 
 const styles = {
   box: {
@@ -46,7 +46,7 @@ function MatchingButton() {
 
   const changeState = () => {
     dispatch(toggleMatchingButton());
-    dispatch(setMatchingTimer(INITIAL_SECOND));
+    dispatch(setMatchingWaitingTimer(INITIAL_SECOND));
   };
 
   return (

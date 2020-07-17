@@ -4,10 +4,11 @@ import reducer, {
   setSignUpPasswordCheck,
   toggleLoginState,
   setToken,
-  setSignUpId,
+  setSignUpEmail,
   setTimeOption,
   setCategoryOption,
   toggleMatchingButton,
+  setMatchingWaitingTimer,
 } from './slice';
 
 describe('reducer', () => {
@@ -30,13 +31,13 @@ describe('reducer', () => {
     });
   });
 
-  describe('setSignUpId', () => {
-    const id = 'test@test.com';
+  describe('setSignUpEmail', () => {
+    const email = 'test@test.com';
 
-    it('changes id state', () => {
-      const state = reducer(undefined, setSignUpId(id));
+    it('changes email state', () => {
+      const state = reducer(undefined, setSignUpEmail(email));
 
-      expect(state.signUpFields.id).toBe(id);
+      expect(state.signUpFields.email).toBe(email);
     });
   });
 
@@ -95,6 +96,16 @@ describe('reducer', () => {
       const state = reducer(undefined, toggleMatchingButton());
 
       expect(state.matchingButtonState).toBe(true);
+    });
+  });
+
+  describe('setMatchingWaitingTimer', () => {
+    const initialSecond = 1;
+
+    it('sets matching waiting timer', () => {
+      const state = reducer(undefined, setMatchingWaitingTimer(initialSecond));
+
+      expect(state.matchingWaitingTimer).toBe(initialSecond);
     });
   });
 });
