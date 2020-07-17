@@ -6,7 +6,10 @@ import validate from '../validator/validator';
 
 const router = express.Router();
 
-router.post('/login', validate([body('email').isEmail(), body('password').isLength({ min: 1 })]), async (req, res) => {
+router.post('/login', validate([
+  body('email').isEmail(),
+  body('password').isLength({ min: 1 }),
+]), async (req, res) => {
   const { email, password } = req.body;
   try {
     const token = await authService.login({ email, password });
@@ -22,7 +25,11 @@ router.post('/login', validate([body('email').isEmail(), body('password').isLeng
   }
 });
 
-router.post('/signup', validate([body('email').isEmail(), body('password').isLength({ min: 1 }), body('nickname').isLength({ min: 1 })]), async (req, res) => {
+router.post('/signup', validate([
+  body('email').isEmail(),
+  body('password').isLength({ min: 1 }),
+  body('nickname').isLength({ min: 1 }),
+]), async (req, res) => {
   const { email, password, nickname } = req.body;
   try {
     const errors = await authService.signup({ email, password, nickname });
