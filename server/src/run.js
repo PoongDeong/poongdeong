@@ -7,6 +7,7 @@ const port = process.env.PORT || 3000;
 
 (async () => {
   await createTable();
+  
   await createUser();
 
   server.listen(port, () => {
