@@ -1,5 +1,5 @@
 const user = {
-    getInfo: jest.fn(),
-  };
-  
-  export default user;
+  getInfo: jest.fn(),
+};
+
+export default user;
