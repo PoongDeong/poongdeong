@@ -2,8 +2,8 @@ import React from 'react';
 import PomodoroVideo from '../components/PomodoroVideo';
 import PomodoroTimer from '../components/PomodoroTimer';
 import PomodoroMessage from '../components/PomodoroMessage';
-import PomodoroProgress from '../components/PomodoroProgress';
 import PomodoroUserInfo from '../components/PomodoroUserInfo';
+import MatchingSystem from "../components/MatchingSystem";
 
 const styles = {
   videoBox: {
@@ -24,10 +24,10 @@ export default function PomodoroPage() {
     <div>
       <PomodoroMessage />
       <PomodoroTimer />
-      <PomodoroProgress />
       <div css={styles.videoBox}>
         <div css={styles.userBox}>
-          <PomodoroVideo />
+          {/*<PomodoroVideo />*/}
+          <MatchingSystem />
           <PomodoroUserInfo />
         </div>
         <div css={styles.userBox}>

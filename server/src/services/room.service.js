@@ -17,3 +17,5 @@ export const findRoomByTimeOption = (timeOption) => (
 export const filterRoom = (name) => {
   setRooms(rooms.filter((room) => room.name !== name));
 };
+
+export const getRoomIdFrom = (socket) => socket.id;

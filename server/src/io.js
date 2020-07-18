@@ -10,6 +10,7 @@ import {
   findRoomByTimeOption,
   filterRoom,
   appendRoom,
+  getRoomIdFrom,
 } from './services/room.service';
 
 const io = socket(server);
@@ -23,8 +24,8 @@ io.on('connection', (s) => {
   s.on('match', async ({ timeOption, categoryOption }) => {
     const room = findRoomByTimeOption(timeOption);
     if (room) {
-      s.join(room.name, async () => {
-        filterRoom(room.name);
+      s.join(room.roomName, async () => {
+        filterRoom(room.roomName);
         const userId = s.decoded_token.id;
         await MatchService.createMatchStart({
           matchId: room.matchId,
@@ -32,12 +33,15 @@ io.on('connection', (s) => {
           option: timeOption,
         });
 
-        io.to(room.name).emit('START', { matchId: room.matchId });
+        io.to(room.roomName).emit('START', {
+          matchId: room.matchId,
+          roomName: room.roomName,
+        });
 
         const delay = convertToMilliSeconds(timeOption);
 
         setTimeout(() => {
-          io.to(room.name).emit('END', { matchId: room.matchId });
+          io.to(room.roomName).emit('END', { matchId: room.matchId });
         }, delay);
       });
 
@@ -45,19 +49,18 @@ io.on('connection', (s) => {
     }
 
     const userId = s.decoded_token.id;
-    const name = s.id;
-
+    const roomName = getRoomIdFrom(s);
     const matchId = await MatchService.createMatch(userId);
 
     appendRoom({
-      name: s.id,
+      roomName,
       timeOption,
       categoryOption,
       userId,
       matchId,
     });
-    s.join(name, () => {
-      io.to(name).emit('CREATE_ROOM');
+    s.join(roomName, () => {
+      io.to(roomName).emit('CREATE_ROOM');
     });
   });
 
@@ -66,6 +69,17 @@ io.on('connection', (s) => {
     const matchEndId = await MatchService.createMatchEnd({ matchId, userId });
 
     s.emit('MATCH_END_CREATE', { matchEndId });
+  });
+
+  s.on('CALL_USER', (data) => {
+    s.broadcast.to(data.roomName).emit('RECEIVE_CALL', {
+      signal: data.signalData,
+      from: data.from,
+    });
+  });
+
+  s.on('ACCEPT_CALL', ({ roomName, signal }) => {
+    s.broadcast.to(roomName).emit('CALL_ACCEPTED', signal);
   });
 });
 

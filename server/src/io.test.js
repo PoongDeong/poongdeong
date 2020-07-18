@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-import { findRoomByTimeOption } from './services/room.service';
+import { findRoomByTimeOption, getRoomIdFrom } from './services/room.service';
 
 import * as MatchService from './services/match.service';
 import convertToMilliSeconds from './services/time-option.service';
@@ -40,7 +40,10 @@ describe('io', () => {
 
   context('when exact room exists', () => {
     beforeEach(() => {
-      findRoomByTimeOption.mockReturnValue({ name: 'name' });
+      findRoomByTimeOption.mockReturnValue({
+        roomName: 'name',
+        matchId: '1234',
+      });
     });
 
     it('receives user joined', (done) => {
@@ -51,8 +54,11 @@ describe('io', () => {
         categoryOption: '공부',
       });
 
-      socket.on('START', () => {
+      socket.on('START', ({ matchId, roomName }) => {
         expect(MatchService.createMatchStart).toBeCalled();
+
+        expect(matchId).not.toBeUndefined();
+        expect(roomName).not.toBeUndefined();
 
         socket.on('END', () => {
           done();
@@ -95,6 +101,57 @@ describe('io', () => {
       socket.on('MATCH_END_CREATE', ({ matchEndId }) => {
         expect(matchEndId).toBe(1);
 
+        done();
+      });
+    });
+  });
+
+  context('when call to user', () => {
+    const matchId = '1234';
+    const roomName = '1234';
+    const signal = '1234';
+
+    beforeEach(() => {
+      findRoomByTimeOption
+        .mockReturnValueOnce(null)
+        .mockReturnValueOnce({ matchId, roomName });
+      getRoomIdFrom.mockReturnValue(roomName);
+      MatchService.createMatch.mockResolvedValue(matchId);
+    });
+
+    it('sends callUser event to other user', (done) => {
+      const user = connect();
+
+      user.on('CREATE_ROOM', () => {
+        const other = connect();
+
+        other.on('RECEIVE_CALL', () => {
+          other.emit('ACCEPT_CALL', {
+            roomName,
+            signal,
+          });
+        });
+
+        other.emit('match', {
+          timeOption: '50분',
+          categoryOption: '공부',
+        });
+      });
+
+      user.on('START', (data) => {
+        user.emit('CALL_USER', {
+          signalData: '',
+          from: '',
+          roomName: data.roomName,
+        });
+      });
+
+      user.emit('match', {
+        timeOption: '50분',
+        categoryOption: '공부',
+      });
+
+      user.on('CALL_ACCEPTED', () => {
         done();
       });
     });
