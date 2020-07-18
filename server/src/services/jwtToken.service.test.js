@@ -7,7 +7,7 @@ describe('jwtToken', () => {
     describe('createToken', () => {
       it('returns a token ', async () => {
         const token = await jwtToken.createToken({ email });
-
+        console.log(token);
         expect(token).toBeDefined();
       });
     });

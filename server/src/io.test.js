@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import server from './io';
 
 describe('io', () => {
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdpYm9uZ0BnbWFpbC5jb20iLCJpYXQiOjE1OTQ5NzM1NzcsImV4cCI6MTU5NTAzNDc3Nywic3ViIjoidXNlckluZm8ifQ.tmBN7GTXvYVO5aJLbUTmMkypnjtN6Bh82tmye2CRA34';
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdpYm9uZ0BnbWFpbC5jb20iLCJpYXQiOjE1OTUwNTgxMTcsInN1YiI6InVzZXJJbmZvIn0.ON8EnLcVVEc8NHxME6xFSokQTkyr3N4sARDmhRkopFo';
 
   let runningServer;
 
