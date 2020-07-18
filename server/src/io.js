@@ -3,6 +3,9 @@ import socketioJwt from 'socketio-jwt';
 
 import server from './server';
 
+import * as MatchService from './services/match.service';
+import convertToMilliSeconds from './services/time-option.service';
+
 import {
   findRoomByTimeOption,
   filterRoom,
@@ -17,28 +20,52 @@ io.use(socketioJwt.authorize({
 }));
 
 io.on('connection', (s) => {
-  s.on('match', ({ timeOption, categoryOption }) => {
+  s.on('match', async ({ timeOption, categoryOption }) => {
     const room = findRoomByTimeOption(timeOption);
     if (room) {
-      s.join(room.name, () => {
-        io.to(room.name).emit('USER_JOIN');
+      s.join(room.name, async () => {
         filterRoom(room.name);
+        const userId = s.decoded_token.id;
+        await MatchService.createMatchStart({
+          matchId: room.matchId,
+          userId,
+          option: timeOption,
+        });
+
+        io.to(room.name).emit('START', { matchId: room.matchId });
+
+        const delay = convertToMilliSeconds(timeOption);
+
+        setTimeout(() => {
+          io.to(room.name).emit('END', { matchId: room.matchId });
+        }, delay);
       });
-      // TODO: create match
-      // TODO: send match
+
       return;
     }
 
+    const userId = s.decoded_token.id;
     const name = s.id;
+
+    const matchId = await MatchService.createMatch(userId);
+
     appendRoom({
-      owner: s.decoded_token.id,
       name: s.id,
       timeOption,
       categoryOption,
+      userId,
+      matchId,
     });
     s.join(name, () => {
       io.to(name).emit('CREATE_ROOM');
     });
+  });
+
+  s.on('END_RESPONSE', async ({ matchId }) => {
+    const userId = s.decoded_token.id;
+    const matchEndId = await MatchService.createMatchEnd({ matchId, userId });
+
+    s.emit('MATCH_END_CREATE', { matchEndId });
   });
 });
 
