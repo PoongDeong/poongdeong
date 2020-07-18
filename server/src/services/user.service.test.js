@@ -20,7 +20,7 @@ describe('user', () => {
     userRepository.findByEmail.mockResolvedValue(info);
     jwtTokenService.createToken.mockReturnValue(token);
   });
-  describe('getUserInfo', () => {
+  describe('getUserinfo', () => {
     context('with given existing token', () => {
       it('return a userInfo', async () => {
         const userInfo = await userService.getUserInfo(token);
