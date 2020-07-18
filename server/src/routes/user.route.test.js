@@ -10,7 +10,6 @@ describe('/user', () => {
   const token = 'token';
   const info = {
     email: 'gibong@gmail.com',
-    password: '1234',
     nickname: 'gibong',
   };
   describe('POST /info', () => {
