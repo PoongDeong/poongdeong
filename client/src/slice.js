@@ -18,7 +18,7 @@ const { actions, reducer } = createSlice({
       password: '',
     },
     token: '',
-    loginState: false,
+    loginState: !!localStorage.getItem('token'),
     timeOption: '',
     categoryOption: '',
     matchingButtonState: false,
