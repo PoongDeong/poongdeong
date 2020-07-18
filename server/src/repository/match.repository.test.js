@@ -52,7 +52,7 @@ describe('MatchRepository', () => {
       it('creates matchUser and matchStart', async () => {
         const id = await createMatchStart({ matchId, userId, option });
 
-        expect(id).toBe(matchId);
+        expect(id).toBe(userId);
       });
     });
 
