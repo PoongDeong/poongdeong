@@ -2,9 +2,14 @@ import io from 'socket.io-client';
 
 import { findRoomByTimeOption } from './services/room.service';
 
+import * as MatchService from './services/match.service';
+import convertToMilliSeconds from './services/time-option.service';
+
 import server from './io';
 
 jest.mock('./services/room.service');
+jest.mock('./services/match.service');
+jest.mock('./services/time-option.service');
 
 describe('io', () => {
   let runningServer;
@@ -19,6 +24,14 @@ describe('io', () => {
 
   beforeEach((done) => {
     runningServer = server.listen(3000, done);
+  });
+
+  beforeEach(() => {
+    MatchService.createMatch.mockClear();
+    MatchService.createMatchStart.mockClear();
+    MatchService.createMatchEnd.mockClear();
+
+    convertToMilliSeconds.mockReturnValue(1000);
   });
 
   afterEach(() => {
@@ -38,8 +51,12 @@ describe('io', () => {
         categoryOption: '공부',
       });
 
-      socket.on('USER_JOIN', () => {
-        done();
+      socket.on('START', () => {
+        expect(MatchService.createMatchStart).toBeCalled();
+
+        socket.on('END', () => {
+          done();
+        });
       });
     });
   });
@@ -58,6 +75,26 @@ describe('io', () => {
       });
 
       socket.on('CREATE_ROOM', () => {
+        expect(MatchService.createMatch).toBeCalled();
+
+        done();
+      });
+    });
+  });
+
+  context('when response to end', () => {
+    beforeEach(() => {
+      MatchService.createMatchEnd.mockResolvedValue(1);
+    });
+
+    it('creats matchEnd', (done) => {
+      const socket = connect();
+
+      socket.emit('END_RESPONSE', { matchId: 1 });
+
+      socket.on('MATCH_END_CREATE', ({ matchEndId }) => {
+        expect(matchEndId).toBe(1);
+
         done();
       });
     });
