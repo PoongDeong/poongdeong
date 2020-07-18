@@ -3,8 +3,18 @@ import db from '../database';
 import createTable from './create-table';
 
 describe('create-table', () => {
+  const tables = [
+    'users',
+    'matches',
+    'matchUsers',
+    'matchStart',
+    'matchTime',
+    'matchEnd',
+  ];
+
   beforeEach(async () => {
-    await db.schema.dropTableIfExists('users');
+    const promises = tables.map((table) => db.schema.dropTableIfExists(table));
+    await Promise.all(promises);
   });
 
   afterAll(async () => {
@@ -14,21 +24,30 @@ describe('create-table', () => {
   it('creates table', async () => {
     await createTable();
 
-    const users = await db('users');
+    const promises = tables.map((table) => db(table));
 
-    expect(users).toHaveLength(0);
+    const result = await Promise.all(promises);
+
+    result.forEach((it) => {
+      expect(it).toHaveLength(0);
+    });
   });
 
   context('when already table exists', () => {
     beforeEach(async () => {
       await createTable();
     });
+
     it('doesnt creates table', async () => {
       await createTable();
 
-      const users = await db('users');
+      const promises = tables.map((table) => db(table));
 
-      expect(users).toHaveLength(0);
+      const result = await Promise.all(promises);
+
+      result.forEach((it) => {
+        expect(it).toHaveLength(0);
+      });
     });
   });
 });
