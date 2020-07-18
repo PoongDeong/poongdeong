@@ -28,15 +28,10 @@ const styles = {
 
 export default function BottomMenu() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
 
   return (
     <div css={styles.menu}>
       <BottomNavigation
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
         showLabels
         className={classes.root}
       >
