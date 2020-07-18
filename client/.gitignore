@@ -2,3 +2,5 @@ node_modules
 dist
 deploy.sh
 coverage
+/env
+.env
