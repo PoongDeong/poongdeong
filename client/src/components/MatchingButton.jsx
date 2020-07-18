@@ -6,6 +6,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { toggleMatchingButton, setMatchingWaitingTimer } from '../slice';
 
+import { get } from '../util';
+
 const styles = {
   box: {
     marginTop: '10%',
@@ -23,6 +25,9 @@ const styles = {
     boxShadow: '0 2px 5px 0 rgba(0,0,0,0.26)',
     fontSize: '35px',
     outline: 'none',
+    ':disabled': {
+      background: '#005cb266',
+    },
   },
   activeButton: {
     width: '200px',
@@ -39,14 +44,17 @@ const styles = {
 };
 
 function MatchingButton() {
-  const matchingButtonState = useSelector((state) => state.matchingButtonState);
+  const matchingButtonState = useSelector(get('matchingButtonState'));
+  const timeOption = useSelector(get('timeOption'));
+  const categoryOption = useSelector(get('categoryOption'));
+
   const dispatch = useDispatch();
 
-  const INITIAL_SECOND = 1;
+  const INITIAL_SECONDS = 1;
 
   const changeState = () => {
     dispatch(toggleMatchingButton());
-    dispatch(setMatchingWaitingTimer(INITIAL_SECOND));
+    dispatch(setMatchingWaitingTimer(INITIAL_SECONDS));
   };
 
   return (
@@ -72,6 +80,7 @@ function MatchingButton() {
               onClick={changeState}
               css={styles.button}
               type="button"
+              disabled={!timeOption || !categoryOption}
             >
               매칭시작
             </button>
