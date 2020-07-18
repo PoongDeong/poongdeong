@@ -12,6 +12,7 @@ export const createMatch = async (userId) => {
 
     return matchId;
   } catch (err) {
+    console.error('createMatch error: ', err);
     await tx.rollback();
   }
 };
@@ -28,8 +29,11 @@ export const createMatchStart = async ({ matchId, userId, option }) => {
 
     return matchId;
   } catch (err) {
+    console.error('createMatch error: ', err);
     await tx.rollback();
   }
 };
 
-export const createMatchEnd = async ({ matchId, userId }) => await db('matchEnd').insert({ matchId, userId });
+export const createMatchEnd = async ({ matchId, userId }) => (
+  await db('matchEnd').insert({ matchId, userId })
+);
