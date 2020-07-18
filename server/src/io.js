@@ -3,6 +3,12 @@ import socketioJwt from 'socketio-jwt';
 
 import server from './server';
 
+import {
+  findRoomByTimeOption,
+  filterRoom,
+  appendRoom,
+} from './services/room.service';
+
 const io = socket(server);
 
 io.use(socketioJwt.authorize({
@@ -10,19 +16,13 @@ io.use(socketioJwt.authorize({
   handshake: true,
 }));
 
-let rooms = [{
-  name: 'gibong',
-  timeOption: '25분',
-  categoryOption: '코딩',
-}];
-
 io.on('connection', (s) => {
   s.on('match', ({ timeOption, categoryOption }) => {
-    const room = rooms.find((it) => it.timeOption === timeOption);
+    const room = findRoomByTimeOption(timeOption);
     if (room) {
       s.join(room.name, () => {
-        io.to(room.name).emit('a new user has joined the room');
-        rooms = rooms.filter((it) => it.name !== room.name);
+        io.to(room.name).emit('USER_JOIN');
+        filterRoom(room.name);
       });
       // TODO: create match
       // TODO: send match
@@ -30,17 +30,14 @@ io.on('connection', (s) => {
     }
 
     const name = s.id;
-    rooms = [
-      ...rooms,
-      {
-        owner: s.decoded_token.id,
-        name: s.id,
-        timeOption,
-        categoryOption,
-      },
-    ];
+    appendRoom({
+      owner: s.decoded_token.id,
+      name: s.id,
+      timeOption,
+      categoryOption,
+    });
     s.join(name, () => {
-      io.to(name).emit('created a room');
+      io.to(name).emit('CREATE_ROOM');
     });
   });
 });

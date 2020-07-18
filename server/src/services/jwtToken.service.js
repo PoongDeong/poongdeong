@@ -7,7 +7,7 @@ const JWTToken = {
     return jwt.sign(
       data,
       privateKey,
-      { expiresIn: '17h', subject: 'userInfo' },
+      { subject: 'userInfo' },
     );
   },
 
