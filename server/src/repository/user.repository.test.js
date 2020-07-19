@@ -116,9 +116,9 @@ describe('user.repository', () => {
     const userURL = 'http://NEW_URL.COM';
     it('changes user image url', async () => {
       await userRepository.create(user);
-      await userRepository.setUserImage(user.email, userURL);
+      await userRepository.setUserImage(user.id, userURL);
       const modifiedUser = await userRepository.findByEmail(user.email);
-      expect(modifiedUser.userURL).toBe(user.userURL);
+      expect(modifiedUser.userURL).toBe(userURL);
     });
   });
 
