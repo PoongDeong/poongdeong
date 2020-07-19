@@ -23,18 +23,15 @@ const { actions, reducer } = createSlice({
     categoryOption: '',
     matchingButtonState: false,
     matchingWaitingTimer: 1,
-<<<<<<< HEAD
     stream: '',
     callerSignal: '',
     callAccepted: false,
     savedRoomName: '',
-=======
     userFields: {
       profileImage: '../src/images/default-image.jpeg',
       userEmail: '',
       userNickName: '',
     },
->>>>>>> Add profile image uploader
   },
   reducers: {
     toggleLoginState(state) {
@@ -105,16 +102,13 @@ export const {
   setCategoryOption,
   toggleMatchingButton,
   setMatchingWaitingTimer,
-<<<<<<< HEAD
   setStream,
   setCallerSignal,
   setCallAccepted,
   setSavedRoomName,
-=======
   setProfileImage,
   setUserEmail,
   setUserNickName,
->>>>>>> Add profile image uploader
 } = actions;
 
 const first = (arr) => arr[0];
