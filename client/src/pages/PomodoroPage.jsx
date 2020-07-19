@@ -15,6 +15,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
+    marginTop: '50px',
   },
   statement: {
     color: '#953131',
@@ -38,6 +39,8 @@ export default function PomodoroPage({ isPartnerOn }) {
     getDataFromServer(setUserInfo);
   }, []);
 
+  console.log(userInfo);
+
   return (
     <div>
       <div css={styles.statement}>집중하세요! 지금 풍덩이 진행중입니다!</div>
@@ -45,12 +48,12 @@ export default function PomodoroPage({ isPartnerOn }) {
       <div css={styles.videoBox}>
         <div css={styles.userBox}>
           <PomodoroUserInfo
-            userInfo={userInfo}
+            name={"나"}
           />
         </div>
         <div css={styles.userBox}>
           <PomodoroUserInfo
-            userInfo={userInfo}
+            name={"상대방"}
           />
         </div>
       </div>

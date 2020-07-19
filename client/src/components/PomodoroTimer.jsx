@@ -23,7 +23,7 @@ const styles = {
 export default function PomodoroTimer({ isPartnerOn }) {
   const timeOption = useSelector((state) => state.timeOption);
 
-  const initialTime = Number(timeOption.replace(/[분]/g, "")) * 60;
+  const initialTime = timeOption === '50분' ? 10 : Number(timeOption.replace(/[분]/g, "")) * 60;
   const [timer, setTimer] = useState(initialTime)
 
   const intervalTimer = setInterval(() => {

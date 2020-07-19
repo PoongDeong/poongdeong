@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function PomodoroUserInfo({ userInfo }) {
+export default function PomodoroUserInfo({ name }) {
   return (
     <div>
-      {/*<div>{userInfo.nickname}</div>*/}
+      <div>{name}</div>
     </div>
   );
 }
