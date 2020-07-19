@@ -24,7 +24,7 @@ router.get('/userImage/:token', validate([
 ]), async (req, res) => {
   const { token } = req.params;
   try {
-    const userURL = await userService.getUserImageURL(JWTToken.verifyToken(token));
+    const userURL = await userService.getUserImageURL(await JWTToken.verifyToken(token));
     res.status(200).send({ userURL });
   } catch (err) {
     res.status(500).send({ message: 'Internal server error' });

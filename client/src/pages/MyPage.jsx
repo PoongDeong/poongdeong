@@ -82,7 +82,9 @@ export default function MyPage() {
 
       try {
         const userImageUrl = await getUserImage();
-        await dispatch(setProfileImage(userImageUrl));
+        if (userImageUrl) {
+          await dispatch(setProfileImage(userImageUrl));
+        }
       } catch {
         await alertError('기존 프로필 이미지를 불러오지못했습니다');
       }

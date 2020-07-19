@@ -28,7 +28,7 @@ const { actions, reducer } = createSlice({
     callAccepted: false,
     savedRoomName: '',
     userFields: {
-      profileImage: '../src/images/default-image.jpeg',
+      profileImage: 'https://resource.poongdeong.com/profile.jpeg',
       userEmail: '',
       userNickName: '',
     },

@@ -6,6 +6,7 @@ import userRepository from './user.repository';
 
 describe('user.repository', () => {
   const user = {
+    id: 1,
     email: 'tester@exapmle.com',
     password: '1234',
     nickname: 'nickname',
@@ -115,10 +116,9 @@ describe('user.repository', () => {
     const userURL = 'http://NEW_URL.COM';
     it('changes user image url', async () => {
       await userRepository.create(user);
-      await userRepository.setUserImage(user.email, userURL);
+      await userRepository.setUserImage(user.id, userURL);
       const modifiedUser = await userRepository.findByEmail(user.email);
-
-      expect(modifiedUser.userURL).not.toBe(user.userURL);
+      expect(modifiedUser.userURL).toBe(userURL);
     });
   });
 
@@ -127,7 +127,7 @@ describe('user.repository', () => {
       await userRepository.create(user);
     });
     it('returns image url of the user', async () => {
-      const userURL = await userRepository.getUserImage(user.email);
+      const userURL = await userRepository.getUserImage(user.id);
       expect(userURL).toBe(user.userURL);
     });
   });
