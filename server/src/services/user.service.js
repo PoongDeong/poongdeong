@@ -4,8 +4,8 @@ import jwtTokenService from './jwtToken.service';
 
 const userService = {
   async getUserInfo(token) {
-    const email = await jwtTokenService.verifyToken(token);
-    const userInfo = await userRepository.findByEmail(email);
+    const id = await jwtTokenService.verifyToken(token);
+    const userInfo = await userRepository.findById(id.id);
     return userInfo;
   },
 
