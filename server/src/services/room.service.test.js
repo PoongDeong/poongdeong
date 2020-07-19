@@ -4,7 +4,6 @@ import {
   setRooms,
   findRoomByTimeOption,
   filterRoom,
-  getRoomIdFrom,
 } from './room.service';
 
 describe('roomService', () => {
@@ -23,7 +22,7 @@ describe('roomService', () => {
   describe('appendRoom', () => {
     it('adds rooms', () => {
       appendRoom({
-        name: 'NEW_ROOM',
+        roomName: 'NEW_ROOM',
         timeOption: '25분',
         categoryOption: '공부',
         owner: 1,
@@ -38,7 +37,7 @@ describe('roomService', () => {
   describe('findRoomByTimeOption', () => {
     context('rooms안에 room이 있을경우', () => {
       const existingRoom = {
-        name: 'NEW_ROOM',
+        roomName: 'NEW_ROOM',
         timeOption: '25분',
         categoryOption: '공부',
         owner: 1,
@@ -56,7 +55,7 @@ describe('roomService', () => {
   describe('filterRoom', () => {
     context('with rooms containing the specific room', () => {
       const existingRoom = {
-        name: 'NEW_ROOM',
+        roomName: 'NEW_ROOM',
         timeOption: '25분',
         categoryOption: '공부',
         owner: 1,
@@ -70,18 +69,6 @@ describe('roomService', () => {
 
         expect(getRooms()).toHaveLength(0);
       });
-    });
-  });
-
-  describe('getRoomIdFrom', () => {
-    const socket = {
-      id: '1234',
-    };
-
-    it('returns room id', () => {
-      const id = getRoomIdFrom(socket);
-
-      expect(id).toBe(socket.id);
     });
   });
 });
