@@ -12,10 +12,11 @@ services:
     expose:
       - "3000"
     environment:
-    - DB_HOST=${DB_HOST}
+      - DB_HOST=${DB_HOST}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DATABASE=${DATABASE}
+      - NODE_ENV=production
     depends_on:
       - db
 
@@ -32,7 +33,7 @@ services:
   db:
     image: mariadb:10.4.8
     ports:
-      - '3306:3306'
+      - "3306:3306"
     restart: always
     env_file:
       - .env
