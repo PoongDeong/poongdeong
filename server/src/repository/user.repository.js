@@ -19,6 +19,15 @@ const userRepository = {
     const users = await db('users').where({ email });
     return users[0];
   },
+
+  async setUserImage(email, userURL) {
+    await db('users').where({ email }).update({ userURL });
+  },
+
+  async getUserImage(email) {
+    const users = await db('users').where({ email });
+    return users[0].userURL;
+  },
 };
 
 export default userRepository;

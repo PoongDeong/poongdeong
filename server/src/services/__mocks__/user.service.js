@@ -1,5 +1,6 @@
-const user = {
+const userService = {
   getInfo: jest.fn(),
+  getUserImageURL: jest.fn(),
 };
 
-export default user;
+export default userService;

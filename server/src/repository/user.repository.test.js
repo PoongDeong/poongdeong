@@ -9,6 +9,7 @@ describe('user.repository', () => {
     email: 'tester@exapmle.com',
     password: '1234',
     nickname: 'nickname',
+    userURL: 'http://test.com',
   };
 
   beforeEach(async () => {
@@ -107,6 +108,27 @@ describe('user.repository', () => {
 
         expect(foundUser).toBeUndefined();
       });
+    });
+  });
+
+  describe('setUserImage', () => {
+    const userURL = 'http://NEW_URL.COM';
+    it('changes user image url', async () => {
+      await userRepository.create(user);
+      await userRepository.setUserImage(user.email, userURL);
+      const modifiedUser = await userRepository.findByEmail(user.email);
+
+      expect(modifiedUser.userURL).not.toBe(user.userURL);
+    });
+  });
+
+  describe('getUserImage', () => {
+    beforeEach(async () => {
+      await userRepository.create(user);
+    });
+    it('returns image url of the user', async () => {
+      const userURL = await userRepository.getUserImage(user.email);
+      expect(userURL).toBe(user.userURL);
     });
   });
 });
