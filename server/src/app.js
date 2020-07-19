@@ -8,7 +8,7 @@ app.use(express.json());
 
 const origins = {
   development: 'http://localhost:8080',
-  production: 'https://poongdeong.com',
+  production: ['http://poongdeong.com', 'https://poongdeong.com'],
 };
 
 app.use(cors({
