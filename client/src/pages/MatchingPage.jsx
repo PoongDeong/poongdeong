@@ -144,8 +144,8 @@ export default function MatchingPage() {
       });
 
     socket.current.emit('match', {
-      timeOption: '50분',
-      categoryOption: '공부',
+      timeOption,
+      categoryOption,
     });
 
     socket.current.on('START', ({ roomName }) => {
