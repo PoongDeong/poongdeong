@@ -1,5 +1,5 @@
 const userService = {
-  getInfo: jest.fn(),
+  getUserInfo: jest.fn(),
   getUserImageURL: jest.fn(),
 };
 
