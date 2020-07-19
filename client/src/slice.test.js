@@ -93,7 +93,7 @@ describe('reducer', () => {
 
   describe('toggleMatchingButton', () => {
     it('changes matchingButtonState state', () => {
-      const state = reducer(undefined, toggleMatchingButton());
+      const state = reducer(undefined, toggleMatchingButton(true));
 
       expect(state.matchingButtonState).toBe(true);
     });

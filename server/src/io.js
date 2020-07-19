@@ -75,6 +75,7 @@ io.on('connection', (s) => {
   s.on('CALL_USER', ({ signal, roomName }) => {
     s.to(roomName).emit('RECEIVE_CALL', {
       signal,
+      ready: true,
     });
   });
 
