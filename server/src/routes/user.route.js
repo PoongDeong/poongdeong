@@ -10,7 +10,8 @@ const router = express.Router();
 router.post('/info', async (req, res) => {
   const { token } = req.body;
   try {
-    const userInfo = await userService.getInfo({ token });
+    const userInfo = await userService.getUserInfo(token);
+
     delete userInfo.password;
     res.status(200).send({ userInfo });
   } catch (err) {

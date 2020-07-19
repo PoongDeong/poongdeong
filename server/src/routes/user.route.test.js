@@ -33,14 +33,13 @@ describe('/user', () => {
   describe('POST /info', () => {
     context('with token for getInfo', () => {
       beforeEach(() => {
-        userService.getInfo.mockResolvedValue(user);
+        userService.getUserInfo.mockResolvedValue(user);
       });
 
       it('return status code of 200 and userInfo', async () => {
         const { status, body } = await request(app)
           .post('/user/info')
           .send({ token });
-
         const { userInfo } = body;
 
         expect(userInfo).toEqual(user);
@@ -50,7 +49,7 @@ describe('/user', () => {
 
     context('with unexisting token', () => {
       beforeEach(() => {
-        userService.getInfo.mockRejectedValue(new Error('User not exist'));
+        userService.getUserInfo.mockRejectedValue(new Error('User not exist'));
       });
 
       it('return status code of 401 and error', async () => {
