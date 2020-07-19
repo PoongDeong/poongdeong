@@ -36,10 +36,9 @@ describe('userService', () => {
     });
 
     it('changes to the given image', async () => {
-      const url = await userService.getUserImageURL(user.email)
+      const url = await userService.getUserImageURL(user.email);
 
       expect(url).toBe(user.userURL);
     });
   });
 });
-

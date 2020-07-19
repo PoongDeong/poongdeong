@@ -8,8 +8,8 @@ import multerMiddleware from './multerMiddleware';
 import JWTTokenService from '../services/jwtToken.service';
 
 jest.mock('./multerMiddleware', () => jest.fn((req, res, next) => {
-  req.file = 'asdasd';
-  req.body = 'asdasd';
+  req.file = '';
+  req.body = '';
   next();
 }));
 jest.mock('../services/upload.service');

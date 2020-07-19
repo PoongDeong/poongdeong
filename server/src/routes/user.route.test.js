@@ -50,7 +50,7 @@ describe('/user', () => {
 
     context('with unexisting token', () => {
       beforeEach(() => {
-       userService.getInfo.mockRejectedValue(new Error('User not exist'));
+        userService.getInfo.mockRejectedValue(new Error('User not exist'));
       });
 
       it('return status code of 401 and error', async () => {
