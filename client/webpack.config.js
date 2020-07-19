@@ -17,7 +17,7 @@ module.exports = (env, options) => {
     entry: './src/index.jsx',
     output: {
       path: path.resolve(__dirname, 'dist/'),
-      filename: 'main.js',
+      filename: 'main.[contenthash].js',
     },
     node: {
       fs: 'empty',

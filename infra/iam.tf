@@ -22,6 +22,14 @@ resource "aws_iam_access_key" "resource_uploader_key" {
   user = aws_iam_user.resource_uploader.name
 }
 
+resource "aws_iam_user" "resource_user" {
+  name = "${local.name}-resource-user"
+}
+
+resource "aws_iam_access_key" "resource_user_key" {
+  user = aws_iam_user.resource_user.name
+}
+
 data "aws_iam_policy" "ecr_auth_policy" {
   arn = local.ecr_policy_arn
 }
