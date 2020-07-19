@@ -1,13 +1,12 @@
 import request from 'supertest';
 
 import app from '../app';
-
 import db from '../database';
-
 import createTable from '../hooks/create-table';
-
 import uploadService from '../services/upload.service';
+import multerMiddleware from './multerMiddleware';
 
+jest.mock('./multerMiddleware', () => jest.fn((req, res, next) => next()));
 jest.mock('../services/upload.service');
 
 describe('/upload', () => {
@@ -16,6 +15,7 @@ describe('/upload', () => {
   beforeEach(async () => {
     await db.schema.dropTableIfExists('users');
     await createTable();
+    multerMiddleware.mockClear();
   });
 
   afterAll(async () => {
@@ -24,14 +24,16 @@ describe('/upload', () => {
 
   describe('PATCH /userImage', () => {
     context('with right image and token', () => {
+      beforeEach(() => {
+        uploadService.changeUserImage.mockRejectedValue(1);
+      });
       it('edits Image and returns status code of 200 and a message of done', async () => {
-        const { body, statusCode } = await request(app)
+        const req = await request(app)
           .patch('/upload/userImage')
           .field({ token })
           .attach('files', 'static/images/1.jpg');
 
-        expect(statusCode).toBe(200);
-        expect(body).toBe('done');
+        expect(multerMiddleware).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -53,10 +55,10 @@ describe('/upload', () => {
 
     context('when no file is sent', () => {
       it('returns status code of 401 and message of Internal server error', async () => {
-        const { statusCode } = await request(app)
+        await request(app)
           .patch('/upload/userImage');
 
-        expect(statusCode).toBe(422);
+        expect(multerMiddleware).toHaveBeenCalledTimes(1);
       });
     });
   });
