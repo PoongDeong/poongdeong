@@ -23,10 +23,18 @@ const { actions, reducer } = createSlice({
     categoryOption: '',
     matchingButtonState: false,
     matchingWaitingTimer: 1,
+<<<<<<< HEAD
     stream: '',
     callerSignal: '',
     callAccepted: false,
     savedRoomName: '',
+=======
+    userFields: {
+      profileImage: '../src/images/default-image.jpeg',
+      userEmail: '',
+      userNickName: '',
+    },
+>>>>>>> Add profile image uploader
   },
   reducers: {
     toggleLoginState(state) {
@@ -74,6 +82,15 @@ const { actions, reducer } = createSlice({
     setSavedRoomName(state, { payload: savedRoomName }) {
       return { ...state, savedRoomName };
     },
+    setProfileImage(state, { payload: profileImage }) {
+      return { ...state, profileImage: { ...state.userFields, profileImage } };
+    },
+    setUserEmail(state, { payload: userEmail }) {
+      return { ...state, userEmail: { ...state.userFields, userEmail } };
+    },
+    setUserNickName(state, { payload: userNickName }) {
+      return { ...state, userNickName: { ...state.userFields, userNickName } };
+    },
   },
 });
 
@@ -88,10 +105,16 @@ export const {
   setCategoryOption,
   toggleMatchingButton,
   setMatchingWaitingTimer,
+<<<<<<< HEAD
   setStream,
   setCallerSignal,
   setCallAccepted,
   setSavedRoomName,
+=======
+  setProfileImage,
+  setUserEmail,
+  setUserNickName,
+>>>>>>> Add profile image uploader
 } = actions;
 
 const first = (arr) => arr[0];
