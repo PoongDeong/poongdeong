@@ -4,6 +4,7 @@ import {
   setRooms,
   findRoomByTimeOption,
   filterRoom,
+  getRoomIdFrom,
 } from './room.service';
 
 describe('roomService', () => {
@@ -69,6 +70,18 @@ describe('roomService', () => {
 
         expect(getRooms()).toHaveLength(0);
       });
+    });
+  });
+
+  describe('getRoomIdFrom', () => {
+    const socket = {
+      id: '1234',
+    };
+
+    it('returns room id', () => {
+      const id = getRoomIdFrom(socket);
+
+      expect(id).toBe(socket.id);
     });
   });
 });
