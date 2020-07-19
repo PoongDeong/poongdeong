@@ -32,7 +32,7 @@ export default function MatchingEndPage() {
 
   return (
     <div css={styles.overAll}>
-      <img src="../src/images/end.png" alt="end" />
+      <img src="https://resource.poongdeong.com/end.png" alt="end" />
       <h1>풍덩이 끝났습니다</h1>
       <h1>고생하셨습니다.</h1>
       <button

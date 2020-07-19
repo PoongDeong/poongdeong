@@ -81,7 +81,7 @@ export default function LoginPage() {
 
   return (
     <div css={styles.page}>
-      <img css={styles.logo} src="../src/images/logo.png" alt="Logo" />
+      <img css={styles.logo} src="https://resource.poongdeong.com/logo.png" alt="Logo" />
       <form
         css={styles.form}
       >
