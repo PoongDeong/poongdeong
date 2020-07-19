@@ -102,7 +102,7 @@ export default function MyPage() {
       <div>
         <img
           css={styles.crown}
-          src="../src/images/crown.png"
+          src="https://resource.poongdeong.com/crown.png"
           alt="crown"
         />
         <span>랭킹 : - 위</span>
