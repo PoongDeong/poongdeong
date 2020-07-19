@@ -11,7 +11,7 @@ router.patch('/userImage', uploadMiddleware, async (req, res) => {
   const location = req.file.location || '';
   const token = req.body.token || '';
   try {
-    await uploadService.changeUserImage(jwtTokenService.verifyToken(token), location);
+    await uploadService.changeUserImage(await jwtTokenService.verifyToken(token), location);
     res.status(200).send({ userURL: location });
   } catch (err) {
     res.status(500).send({ message: 'Internal server error' });

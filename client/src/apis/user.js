@@ -7,10 +7,13 @@ dotenv.config();
 const USER_URL = `${process.env.API_URL}/user`;
 
 export const getUserImage = async () => {
-  const TOKEN = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
 
-  const { data } = await axios.get(`${USER_URL}/userImage/${TOKEN}`);
-
+  const { data } = await axios.get(`${USER_URL}/userImage/${token}`, {
+    params: {
+      token,
+    },
+  });
   return data.userURL;
 };
 

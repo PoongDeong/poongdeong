@@ -32,11 +32,13 @@ export default function UploadProfileImage() {
   };
 
   const onChangeFile = async (event) => {
-    const profileImage = event.target.files[0];
+    const files = event.target.files[0];
+    const token = localStorage.getItem('token');
 
     if (event.target.files.length > 0) {
       const formData = new FormData();
-      formData.append('files', profileImage);
+      formData.append('files', files);
+      formData.append('token', token);
 
       try {
         const profileURL = await patchUploadProfileImage(formData);

@@ -20,12 +20,12 @@ const userRepository = {
     return users[0];
   },
 
-  async setUserImage(email, userURL) {
-    await db('users').where({ email }).update({ userURL });
+  async setUserImage(id, userURL) {
+    await db('users').where({ id }).update({ userURL });
   },
 
-  async getUserImage(email) {
-    const users = await db('users').where({ email });
+  async getUserImage(id) {
+    const users = await db('users').where({ id });
     return users[0].userURL;
   },
 };
