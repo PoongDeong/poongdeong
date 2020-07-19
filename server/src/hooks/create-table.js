@@ -8,6 +8,7 @@ const createTable = async () => {
       table.string('email').unique();
       table.string('nickname').unique();
       table.string('password');
+      table.string('userURL');
     });
   }
 

@@ -7,6 +7,7 @@ const defaultUser = {
   email: 'tester@example.com',
   nickname: 'user',
   password: '1234',
+  userURL: 'http://test.com',
 };
 
 const createUser = async () => {
