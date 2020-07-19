@@ -27,6 +27,11 @@ const { actions, reducer } = createSlice({
     callerSignal: '',
     callAccepted: false,
     savedRoomName: '',
+    userFields: {
+      profileImage: '../src/images/default-image.jpeg',
+      userEmail: '',
+      userNickName: '',
+    },
   },
   reducers: {
     toggleLoginState(state) {
@@ -74,6 +79,15 @@ const { actions, reducer } = createSlice({
     setSavedRoomName(state, { payload: savedRoomName }) {
       return { ...state, savedRoomName };
     },
+    setProfileImage(state, { payload: profileImage }) {
+      return { ...state, userFields: { ...state.userFields, profileImage } };
+    },
+    setUserEmail(state, { payload: userEmail }) {
+      return { ...state, userFields: { ...state.userFields, userEmail } };
+    },
+    setUserNickName(state, { payload: userNickName }) {
+      return { ...state, userFields: { ...state.userFields, userNickName } };
+    },
   },
 });
 
@@ -92,6 +106,9 @@ export const {
   setCallerSignal,
   setCallAccepted,
   setSavedRoomName,
+  setProfileImage,
+  setUserEmail,
+  setUserNickName,
 } = actions;
 
 const first = (arr) => arr[0];

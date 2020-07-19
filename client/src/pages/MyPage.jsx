@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+import Swal from 'sweetalert2';
+
+import {
+  toggleLoginState, setProfileImage, setUserEmail, setUserNickName,
+} from '../slice';
 
 import BottomMenu from '../components/BottomMenu';
+import UploadProfileImage from '../components/UploadProfileImage';
 
-import { toggleLoginState } from '../slice';
+import { getUserImage, postUserInfo } from '../apis/user';
 
 const styles = {
   main: {
@@ -38,18 +45,15 @@ const styles = {
     outline: 'none',
     marginTop: '50px',
   },
-  table: {
-    display: 'flex',
-    width: '250px',
+  content: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 100px)',
+    textAlign: 'center',
     fontSize: '19px',
+    marginTop: '20px',
   },
-  infoTitle: {
+  title: {
     fontWeight: 'bold',
-    margin: '20px 10px 20px 43px',
-    textAlign: 'right',
-  },
-  infoData: {
-    margin: '20px 5px 20px 5px',
   },
 };
 
@@ -57,6 +61,33 @@ export default function MyPage() {
   const history = useHistory();
 
   const dispatch = useDispatch();
+
+  const { profileImage, userEmail, userNickName } = useSelector((state) => state.userFields);
+
+  const alertError = async (errorMessage) => {
+    await Swal.fire({ icon: 'error', text: errorMessage });
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const userInfo = await postUserInfo();
+        dispatch(setUserEmail(userInfo.email));
+        dispatch(setUserNickName(userInfo.nickname));
+      } catch {
+        await alertError('사용자 정보를 불러오지 못했습니다');
+        history.push('/');
+        return;
+      }
+
+      try {
+        const userImageUrl = await getUserImage();
+        await dispatch(setProfileImage(userImageUrl));
+      } catch {
+        await alertError('기존 프로필 이미지를 불러오지못했습니다');
+      }
+    })();
+  }, []);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -72,23 +103,24 @@ export default function MyPage() {
           src="../src/images/crown.png"
           alt="crown"
         />
-        <span>랭킹 : 20 위</span>
+        <span>랭킹 : - 위</span>
       </div>
       <img
         css={styles.profile}
-        src="../src/images/default-image.jpeg"
+        src={profileImage}
         alt="profile"
       />
-      <div css={styles.table}>
-        <div css={styles.infoTitle}>
+      <UploadProfileImage />
+      <div css={styles.content}>
+        <div css={styles.title}>
           <div>아이디</div>
           <div>닉네임</div>
           <div>풍덩 횟수</div>
         </div>
-        <div css={styles.infoData}>
-          <div>test</div>
-          <div>풍덩</div>
-          <div>20 회</div>
+        <div>
+          <div>{userEmail}</div>
+          <div>{userNickName}</div>
+          <div>- 회</div>
         </div>
       </div>
 
