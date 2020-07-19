@@ -20,14 +20,18 @@ const styles = {
   },
 };
 
-export default function PomodoroTimer({ isPartnerOn }) {
+export default function PomodoroTimer() {
   const timeOption = useSelector((state) => state.timeOption);
 
-  const initialTime = timeOption === '50분' ? 10 : Number(timeOption.replace(/[분]/g, "")) * 60;
-  const [timer, setTimer] = useState(initialTime)
+  const initialTime = timeOption === '50분' ? 10 : Number(timeOption.replace(/[분]/g, '')) * 60;
+  const [timer, setTimer] = useState(initialTime - 1);
 
   const intervalTimer = setInterval(() => {
-    setTimer(timer - 1);
+    if (timer <= 0) {
+      setTimer(0);
+    } else {
+      setTimer(timer - 1);
+    }
 
     clearInterval(intervalTimer);
   }, 1000);
@@ -35,7 +39,10 @@ export default function PomodoroTimer({ isPartnerOn }) {
   return (
     <div css={styles.box}>
       <div css={styles.text}>
-        {Math.floor(timer / 60)} : {(timer % 60).toString().padStart(2, '0')}
+        {Math.floor(timer / 60)}
+        {' '}
+        :
+        {(timer % 60).toString().padStart(2, '0')}
       </div>
     </div>
   );

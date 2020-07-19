@@ -7,6 +7,7 @@ import SignUpPage from './pages/SignUpPage';
 import PomodoroPage from './pages/PomodoroPage';
 import MyPage from './pages/MyPage';
 import TimelinePage from './pages/TimelinePage';
+import MatchingEndPage from './pages/MatchingEndPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/pomodoro" component={PomodoroPage} />
       <Route path="/mypage" component={MyPage} />
       <Route path="/timeline" component={TimelinePage} />
+      <Route path="/end" component={MatchingEndPage} />
     </Switch>
   );
 }
