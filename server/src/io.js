@@ -11,7 +11,6 @@ import {
   filterRoom,
   appendRoom,
   getRoomIdFrom,
-  getRooms
 } from './services/room.service';
 
 const io = socket(server);
