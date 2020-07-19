@@ -131,7 +131,7 @@ export default function MatchingPage() {
     dispatch(setMatchingWaitingTimer(INITIAL_SECONDS));
 
     const token = localStorage.getItem('token');
-    socket.current = io.connect('http://localhost:3000', {
+    socket.current = io.connect(process.env.API_URL, {
       query: `token=${token}`,
     });
 
