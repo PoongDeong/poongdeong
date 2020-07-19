@@ -1,10 +1,16 @@
 import React from 'react';
 
-export default function PomodoroUserInfo() {
+const styles = {
+  name: {
+    color: '#3d53b4',
+    fontWeight: 'bold',
+  },
+};
+
+export default function PomodoroUserInfo({ name }) {
   return (
     <div>
-      <div>아이디: test</div>
-      <div>티어: 다이아</div>
+      <div css={styles.name}>{name}</div>
     </div>
   );
 }

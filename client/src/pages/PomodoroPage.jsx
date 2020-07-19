@@ -1,7 +1,6 @@
 import React from 'react';
 
 import PomodoroTimer from '../components/PomodoroTimer';
-import PomodoroMessage from '../components/PomodoroMessage';
 import PomodoroUserInfo from '../components/PomodoroUserInfo';
 
 const styles = {
@@ -15,20 +14,31 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
+    marginTop: '50px',
+  },
+  statement: {
+    color: '#953131',
+    textAlign: 'center',
+    marginTop: '50px',
+    fontWeight: 'bold',
   },
 };
 
-export default function PomodoroPage() {
+export default function PomodoroPage({ isPartnerOn }) {
   return (
     <div>
-      <PomodoroMessage />
-      <PomodoroTimer />
+      <div css={styles.statement}>집중하세요! 지금 풍덩이 진행중입니다!</div>
+      <PomodoroTimer isPartnerOn={isPartnerOn} />
       <div css={styles.videoBox}>
         <div css={styles.userBox}>
-          <PomodoroUserInfo />
+          <PomodoroUserInfo
+            name="나"
+          />
         </div>
         <div css={styles.userBox}>
-          <PomodoroUserInfo />
+          <PomodoroUserInfo
+            name="상대방"
+          />
         </div>
       </div>
     </div>

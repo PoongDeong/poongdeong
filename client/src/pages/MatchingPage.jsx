@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
 
+import { useHistory } from 'react-router-dom';
+
 import { useDispatch, useSelector } from 'react-redux';
 
 import io from 'socket.io-client';
@@ -100,6 +102,7 @@ const styles = {
 };
 
 export default function MatchingPage() {
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const matchingButtonState = useSelector(get('matchingButtonState'));
@@ -168,6 +171,19 @@ export default function MatchingPage() {
 
     socket.current.on('MATCH_END_CREATE', () => {
       socket.current.close();
+
+      setIsReady(false);
+      setIsCall(false);
+      setIsPartnerReady(false);
+      setButtonRemoved(false);
+      dispatch(setCallAccepted(false));
+      dispatch(setCallerSignal(''));
+      dispatch(setMatchingWaitingTimer(1));
+      dispatch(setSavedRoomName(''));
+      dispatch(setStream(''));
+      dispatch(toggleMatchingButton(false));
+
+      history.push('/end');
     });
   };
 
@@ -341,7 +357,11 @@ export default function MatchingPage() {
   return (
     <div css={styles.main}>
       {buttonRemoved
-        ? <PomodoroPage />
+        ? (
+          <PomodoroPage
+            isPartnerOn={!!partnerVideo.current}
+          />
+        )
         : (
           <div css={styles.option}>
             <MatchingOpt />
