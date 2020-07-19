@@ -28,7 +28,7 @@ describe('/upload', () => {
         uploadService.changeUserImage.mockRejectedValue(1);
       });
       it('edits Image and returns status code of 200 and a message of done', async () => {
-        const req = await request(app)
+        await request(app)
           .patch('/upload/userImage')
           .field({ token })
           .attach('files', 'static/images/1.jpg');
