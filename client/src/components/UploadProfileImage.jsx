@@ -36,7 +36,7 @@ export default function UploadProfileImage() {
 
     if (event.target.files.length > 0) {
       const formData = new FormData();
-      formData.append('userImg', profileImage);
+      formData.append('files', profileImage);
 
       try {
         const profileURL = await patchUploadProfileImage(formData);
