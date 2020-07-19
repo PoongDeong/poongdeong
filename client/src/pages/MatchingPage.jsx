@@ -341,7 +341,9 @@ export default function MatchingPage() {
   return (
     <div css={styles.main}>
       {buttonRemoved
-        ? <PomodoroPage />
+        ? <PomodoroPage
+            isPartnerOn={!!partnerVideo.current}
+          />
         : (
           <div css={styles.option}>
             <MatchingOpt />

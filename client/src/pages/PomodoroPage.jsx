@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import PomodoroTimer from '../components/PomodoroTimer';
-import PomodoroMessage from '../components/PomodoroMessage';
 import PomodoroUserInfo from '../components/PomodoroUserInfo';
+import { postUserInfo } from "../apis/user";
 
 const styles = {
   videoBox: {
@@ -16,19 +16,42 @@ const styles = {
     alignItems: 'center',
     width: '100%',
   },
+  statement: {
+    color: '#953131',
+    textAlign: 'center',
+    marginTop: '50px',
+    fontWeight: 'bold',
+  }
 };
 
-export default function PomodoroPage() {
+const getDataFromServer = async (setUserInfo) => {
+  const token = localStorage.getItem('token');
+  const userInfo = await postUserInfo(token);
+
+  setUserInfo(userInfo);
+}
+
+export default function PomodoroPage({ isPartnerOn }) {
+  const [userInfo, setUserInfo] = useState();
+
+  useEffect(() => {
+    getDataFromServer(setUserInfo);
+  }, []);
+
   return (
     <div>
-      <PomodoroMessage />
-      <PomodoroTimer />
+      <div css={styles.statement}>집중하세요! 지금 풍덩이 진행중입니다!</div>
+      <PomodoroTimer isPartnerOn={isPartnerOn} />
       <div css={styles.videoBox}>
         <div css={styles.userBox}>
-          <PomodoroUserInfo />
+          <PomodoroUserInfo
+            userInfo={userInfo}
+          />
         </div>
         <div css={styles.userBox}>
-          <PomodoroUserInfo />
+          <PomodoroUserInfo
+            userInfo={userInfo}
+          />
         </div>
       </div>
     </div>
