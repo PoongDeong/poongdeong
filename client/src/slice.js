@@ -23,6 +23,10 @@ const { actions, reducer } = createSlice({
     categoryOption: '',
     matchingButtonState: false,
     matchingWaitingTimer: 1,
+    stream: '',
+    callerSignal: '',
+    callAccepted: false,
+    savedRoomName: '',
   },
   reducers: {
     toggleLoginState(state) {
@@ -52,11 +56,23 @@ const { actions, reducer } = createSlice({
     setCategoryOption(state, { payload: categoryOption }) {
       return { ...state, categoryOption };
     },
-    toggleMatchingButton(state) {
-      return { ...state, matchingButtonState: !state.matchingButtonState };
+    toggleMatchingButton(state, { payload: matchingButtonState }) {
+      return { ...state, matchingButtonState };
     },
     setMatchingWaitingTimer(state, { payload: matchingWaitingTimer }) {
       return { ...state, matchingWaitingTimer };
+    },
+    setStream(state, { payload: stream }) {
+      return { ...state, stream };
+    },
+    setCallerSignal(state, { payload: callerSignal }) {
+      return { ...state, callerSignal };
+    },
+    setCallAccepted(state, { payload: callAccepted }) {
+      return { ...state, callAccepted };
+    },
+    setSavedRoomName(state, { payload: savedRoomName }) {
+      return { ...state, savedRoomName };
     },
   },
 });
@@ -72,6 +88,10 @@ export const {
   setCategoryOption,
   toggleMatchingButton,
   setMatchingWaitingTimer,
+  setStream,
+  setCallerSignal,
+  setCallAccepted,
+  setSavedRoomName,
 } = actions;
 
 const first = (arr) => arr[0];
