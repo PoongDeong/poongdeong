@@ -146,13 +146,13 @@ describe('io', () => {
         });
       });
 
+      user.on('CALL_ACCEPTED', () => {
+        done();
+      });
+
       user.emit('match', {
         timeOption: '50분',
         categoryOption: '공부',
-      });
-
-      user.on('CALL_ACCEPTED', () => {
-        done();
       });
     });
   });

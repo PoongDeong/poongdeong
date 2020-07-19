@@ -11,6 +11,7 @@ import {
   filterRoom,
   appendRoom,
   getRoomIdFrom,
+  getRooms
 } from './services/room.service';
 
 const io = socket(server);
@@ -71,15 +72,14 @@ io.on('connection', (s) => {
     s.emit('MATCH_END_CREATE', { matchEndId });
   });
 
-  s.on('CALL_USER', (data) => {
-    s.broadcast.to(data.roomName).emit('RECEIVE_CALL', {
-      signal: data.signalData,
-      from: data.from,
+  s.on('CALL_USER', ({ signal, roomName }) => {
+    s.to(roomName).emit('RECEIVE_CALL', {
+      signal,
     });
   });
 
   s.on('ACCEPT_CALL', ({ roomName, signal }) => {
-    s.broadcast.to(roomName).emit('CALL_ACCEPTED', signal);
+    s.to(roomName).emit('CALL_ACCEPTED', signal);
   });
 });
 

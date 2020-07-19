@@ -8,47 +8,71 @@ const styles = {
   box: {
     width: '200px',
     height: '200px',
+    border: '1px solid',
   },
 };
 
 export default function MatchingSystem() {
-  const [yourID, setYourID] = useState('');
-  const [users, setUsers] = useState({});
   const [stream, setStream] = useState();
-  const [receivingCall, setReceivingCall] = useState(false);
-  const [caller, setCaller] = useState('');
   const [callerSignal, setCallerSignal] = useState();
   const [callAccepted, setCallAccepted] = useState(false);
+  const [savedRoomName, setSavedRoomName] = useState('');
 
   const userVideo = useRef();
   const partnerVideo = useRef();
   const socket = useRef();
 
   useEffect(() => {
-    socket.current = io.connect('/');
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-      setStream(stream);
-      if (userVideo.current) {
-        userVideo.current.srcObject = stream;
-      }
+    const token = localStorage.getItem('token');
+    socket.current = io.connect('http://localhost:3000', {
+      query: `token=${token}`,
     });
 
-    socket.current.on('yourID', (id) => {
-      setYourID(id);
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+      .then((stream) => {
+        setStream(stream);
+        if (userVideo.current) {
+          userVideo.current.srcObject = stream;
+        }
+      });
+
+    socket.current.on('CREATE_ROOM', () => {
+      console.log('<Room is created>');
     });
 
-    socket.current.on('woomin', (users) => {
-      setUsers(users);
+    socket.current.emit('match', {
+      timeOption: '50분',
+      categoryOption: '공부',
     });
 
-    socket.current.on('hey', (data) => {
-      setReceivingCall(true);
-      setCaller(data.from);
-      setCallerSignal(data.signal);
+    socket.current.on('START', ({ matchedId, roomName }) => {
+      console.log('START');
+
+      setSavedRoomName(roomName);
+    });
+
+    socket.current.on('RECEIVE_CALL', ({ signal }) => {
+      console.log('RECEIVE_CALL');
+
+      setCallerSignal(signal);
+    });
+
+    socket.current.on('END', ({ matchId }) => {
+      console.log('END');
+
+      socket.current.emit('END_RESPONSE', { matchId });
+    });
+
+    socket.current.on('MATCH_END_CREATE', () => {
+      console.log('MATCH_END_CREATE');
+
+      socket.current.close();
     });
   }, []);
 
-  const callPeer = (id) => {
+  const handleCallButton = () => {
+    console.log('Call button is clicked');
+
     const peer = new Peer({
       initiator: true,
       trickle: false,
@@ -70,23 +94,33 @@ export default function MatchingSystem() {
     });
 
     peer.on('signal', (data) => {
-      socket.current.emit('callUser', { userToCall: id, signalData: data, from: yourID });
+      console.log('Send signal to otherUser');
+
+      socket.current.emit('CALL_USER', {
+        roomName: savedRoomName,
+        signal: data,
+      });
     });
 
     peer.on('stream', (stream) => {
+      console.log('Get stream from otherUser, and append to partnerVideo');
+
       if (partnerVideo.current) {
         partnerVideo.current.srcObject = stream;
       }
     });
 
-    socket.current.on('callAccepted', (signal) => {
-      console.log('signal', signal);
+    socket.current.on('CALL_ACCEPTED', (signal) => {
+      console.log('CALL_ACCEPTED');
+
       setCallAccepted(true);
       peer.signal(signal);
     });
   };
 
-  const acceptCall = () => {
+  const handleMatchingButton = () => {
+    console.log('Mtching button is clicked');
+
     setCallAccepted(true);
     const peer = new Peer({
       initiator: false,
@@ -94,13 +128,18 @@ export default function MatchingSystem() {
       stream,
     });
 
-    peer.on('signal', (data) => {
-      console.log('signal', data);
-      socket.current.emit('acceptCall', { signal: data, to: caller });
+    peer.on('signal', (signal) => {
+      console.log('Send ACCEPT_CALL');
+
+      socket.current.emit('ACCEPT_CALL', {
+        roomName: savedRoomName,
+        signal,
+      });
     });
 
     peer.on('stream', (stream) => {
-      console.log('stream', stream);
+      console.log('Get stream from otherUser, and append to partnerVideo');
+
       partnerVideo.current.srcObject = stream;
     });
 
@@ -110,54 +149,36 @@ export default function MatchingSystem() {
   let UserVideo;
   if (stream) {
     UserVideo = (
-      <video css={styles.box} playsInline muted ref={userVideo} autoPlay />
+      <video
+        css={styles.box}
+        playsInline
+        muted
+        ref={userVideo}
+        autoPlay
+      />
     );
   }
 
   let PartnerVideo;
   if (callAccepted) {
     PartnerVideo = (
-      <video playsInline ref={partnerVideo} autoPlay />
-    );
-  }
-
-  let incomingCall;
-  if (receivingCall) {
-    incomingCall = (
-      <div>
-        <h1>
-          {caller}
-          {' '}
-          is calling you
-        </h1>
-        <button type="button" onClick={acceptCall}>Accept</button>
-      </div>
+      <video
+        css={styles.box}
+        playsInline
+        muted
+        ref={partnerVideo}
+        autoPlay
+      />
     );
   }
 
   return (
     <div>
       <div>
-        <div>
-          {UserVideo}
-          {PartnerVideo}
-        </div>
-        <div>
-          {Object.keys(users).map((key) => {
-            if (key === yourID) {
-              return null;
-            }
-            return (
-              <button onClick={() => callPeer(key)}>
-                Call
-                {key}
-              </button>
-            );
-          })}
-        </div>
-        <div>
-          {incomingCall}
-        </div>
+        <button type="button" onClick={handleCallButton}>call</button>
+        <button type="button" onClick={handleMatchingButton}>matching</button>
+        {UserVideo}
+        {PartnerVideo}
       </div>
     </div>
   );
