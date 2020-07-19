@@ -8,8 +8,8 @@ import uploadMiddleware from './multerMiddleware';
 const router = express.Router();
 
 router.patch('/userImage', uploadMiddleware, async (req, res) => {
-  const { location } = req.file || 'a';
-  const { token } = req.body || 'a';
+  const location = req.file.location || '';
+  const token = req.body.token || '';
   try {
     await uploadService.changeUserImage(jwtTokenService.verifyToken(token), location);
     res.status(200).send({ userURL: location });

@@ -5,10 +5,15 @@ import db from '../database';
 import createTable from '../hooks/create-table';
 import uploadService from '../services/upload.service';
 import multerMiddleware from './multerMiddleware';
+import JWTTokenService from '../services/jwtToken.service';
 
-jest.mock('./multerMiddleware', () => jest.fn((req, res, next) => next()));
+jest.mock('./multerMiddleware', () => jest.fn((req, res, next) => {
+  req.file = 'asdasd';
+  req.body = 'asdasd';
+  next();
+}));
 jest.mock('../services/upload.service');
-
+jest.mock('../services/jwtToken.service');
 describe('/upload', () => {
   const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdpYm9uZ0BnbWFpbC5jb20iLCJpYXQiOjE1OTUwNDc3MzMsInN1YiI6InVzZXJJbmZvIn0.06vOlcXGYOD5oCpSEjvOBsqSfSE8Isbd6wIQXR0Ahsw';
 
@@ -25,7 +30,8 @@ describe('/upload', () => {
   describe('PATCH /userImage', () => {
     context('with right image and token', () => {
       beforeEach(() => {
-        uploadService.changeUserImage.mockRejectedValue(1);
+        JWTTokenService.verifyToken.mockResolvedValue('asd');
+        uploadService.changeUserImage.mockResolvedValue(1);
       });
       it('edits Image and returns status code of 200 and a message of done', async () => {
         await request(app)
