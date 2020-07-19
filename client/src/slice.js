@@ -83,13 +83,13 @@ const { actions, reducer } = createSlice({
       return { ...state, savedRoomName };
     },
     setProfileImage(state, { payload: profileImage }) {
-      return { ...state, profileImage: { ...state.userFields, profileImage } };
+      return { ...state, userFields: { ...state.userFields, profileImage } };
     },
     setUserEmail(state, { payload: userEmail }) {
-      return { ...state, userEmail: { ...state.userFields, userEmail } };
+      return { ...state, userFields: { ...state.userFields, userEmail } };
     },
     setUserNickName(state, { payload: userNickName }) {
-      return { ...state, userNickName: { ...state.userFields, userNickName } };
+      return { ...state, userFields: { ...state.userFields, userNickName } };
     },
   },
 });

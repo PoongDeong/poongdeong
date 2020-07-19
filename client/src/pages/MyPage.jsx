@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
@@ -20,7 +20,18 @@ const styles = {
     marginTop: '100px',
     display: 'flex',
     flexDirection: 'column',
-
+    alignItems: 'center',
+    background: 'white',
+    height: '100%',
+    padding: '15px',
+  },
+  profile: {
+    width: '150px',
+    height: '150px',
+    borderRadius: '5px',
+  },
+  crown: {
+    width: '20px',
     height: '16px',
   },
   logoutButton: {
@@ -51,30 +62,32 @@ export default function MyPage() {
 
   const dispatch = useDispatch();
 
-  const { profileImage, email, nickname } = useSelector((state) => state.userFields);
+  const { profileImage, userEmail, userNickName } = useSelector((state) => state.userFields);
 
   const alertError = async (errorMessage) => {
     await Swal.fire({ icon: 'error', text: errorMessage });
   };
 
-  (async () => {
-    try {
-      const userInfo = await postUserInfo();
-      await dispatch(setUserEmail(userInfo.email));
-      await dispatch(setUserNickName(userInfo.nickname));
-    } catch {
-      await alertError('사용자 정보를 불러오지 못했습니다');
-      history.push('/');
-      return;
-    }
+  useEffect(() => {
+    (async () => {
+      try {
+        const userInfo = await postUserInfo();
+        dispatch(setUserEmail(userInfo.email));
+        dispatch(setUserNickName(userInfo.nickname));
+      } catch {
+        await alertError('사용자 정보를 불러오지 못했습니다');
+        history.push('/');
+        return;
+      }
 
-    try {
-      const userImageUrl = await getUserImage();
-      await dispatch(setProfileImage(userImageUrl));
-    } catch {
-      await alertError('기존 프로필을 업로드하지 못했습니다');
-    }
-  })();
+      try {
+        const userImageUrl = await getUserImage();
+        await dispatch(setProfileImage(userImageUrl));
+      } catch {
+        await alertError('기존 프로필 이미지를 불러오지못했습니다');
+      }
+    })();
+  }, []);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -105,8 +118,8 @@ export default function MyPage() {
           <div>풍덩 횟수</div>
         </div>
         <div>
-          <div>{email}</div>
-          <div>{nickname}</div>
+          <div>{userEmail}</div>
+          <div>{userNickName}</div>
           <div>- 회</div>
         </div>
       </div>
